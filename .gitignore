@@ -1,0 +1,6 @@
+keycloak-mcp
+*.exe
+.env
+.env.local
+dist/
+vendor/

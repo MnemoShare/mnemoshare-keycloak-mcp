@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak-mcp
+  labels:
+    app: keycloak-mcp
+spec:
+  type: ClusterIP
+  selector:
+    app: keycloak-mcp
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http

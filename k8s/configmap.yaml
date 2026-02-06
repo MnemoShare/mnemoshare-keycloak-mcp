@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: keycloak-mcp
+data:
+  TRANSPORT: "http"
+  PORT: "8080"
+  KEYCLOAK_URL: "https://id.mnemoshare.com"
+  KEYCLOAK_REALM: "master"
+  KEYCLOAK_AUTH_MODE: "client_credentials"
+  KEYCLOAK_CLIENT_ID: "mcp-admin"
+  KEYCLOAK_DEFAULT_REALM: "mnemoshare"
+  KEYCLOAK_TOKEN_REFRESH_BUFFER: "30s"
+  LOG_LEVEL: "info"
+  LOG_FORMAT: "json"
