@@ -14,13 +14,13 @@ import (
 // ---------------------------------------------------------------------------
 
 type getBruteForceStatusArgs struct {
-	Realm  string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	UserID string `json:"user_id"         jsonschema:"description=User ID,required"`
+	Realm  string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	UserID string `json:"user_id"         jsonschema:"User ID"`
 }
 
 type clearBruteForceStatusArgs struct {
-	Realm  string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	UserID string `json:"user_id"         jsonschema:"description=User ID,required"`
+	Realm  string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	UserID string `json:"user_id"         jsonschema:"User ID"`
 }
 
 // ---------------------------------------------------------------------------

@@ -14,118 +14,118 @@ import (
 // ---------------------------------------------------------------------------
 
 type listClientsArgs struct {
-	Realm    string `json:"realm,omitempty"    jsonschema:"description=Keycloak realm (uses default if omitted)"`
-	ClientID string `json:"client_id,omitempty" jsonschema:"description=Filter by clientId"`
+	Realm    string `json:"realm,omitempty"    jsonschema:"Keycloak realm (uses default if omitted)"`
+	ClientID string `json:"client_id,omitempty" jsonschema:"Filter by clientId"`
 }
 
 type getClientArgs struct {
-	Realm string `json:"realm,omitempty" jsonschema:"description=Keycloak realm (uses default if omitted)"`
-	ID    string `json:"id"             jsonschema:"required,description=Internal UUID of the client"`
+	Realm string `json:"realm,omitempty" jsonschema:"Keycloak realm (uses default if omitted)"`
+	ID    string `json:"id"             jsonschema:"Internal UUID of the client"`
 }
 
 type createClientArgs struct {
-	Realm        string   `json:"realm,omitempty"          jsonschema:"description=Keycloak realm (uses default if omitted)"`
-	ClientID     string   `json:"client_id"                jsonschema:"required,description=The clientId for the new client"`
-	Name         string   `json:"name,omitempty"           jsonschema:"description=Display name"`
-	Protocol     string   `json:"protocol,omitempty"       jsonschema:"description=Protocol (default openid-connect)"`
-	PublicClient bool     `json:"public_client,omitempty"  jsonschema:"description=Whether the client is public (no secret)"`
-	RootURL      string   `json:"root_url,omitempty"       jsonschema:"description=Root URL of the client"`
-	RedirectURIs []string `json:"redirect_uris,omitempty"  jsonschema:"description=Valid redirect URIs"`
-	WebOrigins   []string `json:"web_origins,omitempty"    jsonschema:"description=Allowed web origins"`
+	Realm        string   `json:"realm,omitempty"          jsonschema:"Keycloak realm (uses default if omitted)"`
+	ClientID     string   `json:"client_id"                jsonschema:"The clientId for the new client"`
+	Name         string   `json:"name,omitempty"           jsonschema:"Display name"`
+	Protocol     string   `json:"protocol,omitempty"       jsonschema:"Protocol (default openid-connect)"`
+	PublicClient bool     `json:"public_client,omitempty"  jsonschema:"Whether the client is public (no secret)"`
+	RootURL      string   `json:"root_url,omitempty"       jsonschema:"Root URL of the client"`
+	RedirectURIs []string `json:"redirect_uris,omitempty"  jsonschema:"Valid redirect URIs"`
+	WebOrigins   []string `json:"web_origins,omitempty"    jsonschema:"Allowed web origins"`
 }
 
 type updateClientArgs struct {
-	Realm        string    `json:"realm,omitempty"          jsonschema:"description=Keycloak realm (uses default if omitted)"`
-	ID           string    `json:"id"                       jsonschema:"required,description=Internal UUID of the client"`
-	Name         *string   `json:"name,omitempty"           jsonschema:"description=Display name"`
-	RootURL      *string   `json:"root_url,omitempty"       jsonschema:"description=Root URL"`
-	RedirectURIs *[]string `json:"redirect_uris,omitempty"  jsonschema:"description=Valid redirect URIs"`
-	WebOrigins   *[]string `json:"web_origins,omitempty"    jsonschema:"description=Allowed web origins"`
-	Enabled      *bool     `json:"enabled,omitempty"        jsonschema:"description=Whether the client is enabled"`
+	Realm        string    `json:"realm,omitempty"          jsonschema:"Keycloak realm (uses default if omitted)"`
+	ID           string    `json:"id"                       jsonschema:"Internal UUID of the client"`
+	Name         *string   `json:"name,omitempty"           jsonschema:"Display name"`
+	RootURL      *string   `json:"root_url,omitempty"       jsonschema:"Root URL"`
+	RedirectURIs *[]string `json:"redirect_uris,omitempty"  jsonschema:"Valid redirect URIs"`
+	WebOrigins   *[]string `json:"web_origins,omitempty"    jsonschema:"Allowed web origins"`
+	Enabled      *bool     `json:"enabled,omitempty"        jsonschema:"Whether the client is enabled"`
 }
 
 type deleteClientArgs struct {
-	Realm string `json:"realm,omitempty" jsonschema:"description=Keycloak realm (uses default if omitted)"`
-	ID    string `json:"id"             jsonschema:"required,description=Internal UUID of the client"`
+	Realm string `json:"realm,omitempty" jsonschema:"Keycloak realm (uses default if omitted)"`
+	ID    string `json:"id"             jsonschema:"Internal UUID of the client"`
 }
 
 type getClientSecretArgs struct {
-	Realm string `json:"realm,omitempty" jsonschema:"description=Keycloak realm (uses default if omitted)"`
-	ID    string `json:"id"             jsonschema:"required,description=Internal UUID of the client"`
+	Realm string `json:"realm,omitempty" jsonschema:"Keycloak realm (uses default if omitted)"`
+	ID    string `json:"id"             jsonschema:"Internal UUID of the client"`
 }
 
 type regenerateClientSecretArgs struct {
-	Realm string `json:"realm,omitempty" jsonschema:"description=Keycloak realm (uses default if omitted)"`
-	ID    string `json:"id"             jsonschema:"required,description=Internal UUID of the client"`
+	Realm string `json:"realm,omitempty" jsonschema:"Keycloak realm (uses default if omitted)"`
+	ID    string `json:"id"             jsonschema:"Internal UUID of the client"`
 }
 
 type getClientServiceAccountArgs struct {
-	Realm string `json:"realm,omitempty" jsonschema:"description=Keycloak realm (uses default if omitted)"`
-	ID    string `json:"id"             jsonschema:"required,description=Internal UUID of the client"`
+	Realm string `json:"realm,omitempty" jsonschema:"Keycloak realm (uses default if omitted)"`
+	ID    string `json:"id"             jsonschema:"Internal UUID of the client"`
 }
 
 type getClientDefaultScopesArgs struct {
-	Realm string `json:"realm,omitempty" jsonschema:"description=Keycloak realm (uses default if omitted)"`
-	ID    string `json:"id"             jsonschema:"required,description=Internal UUID of the client"`
+	Realm string `json:"realm,omitempty" jsonschema:"Keycloak realm (uses default if omitted)"`
+	ID    string `json:"id"             jsonschema:"Internal UUID of the client"`
 }
 
 type addClientDefaultScopeArgs struct {
-	Realm   string `json:"realm,omitempty" jsonschema:"description=Keycloak realm (uses default if omitted)"`
-	ID      string `json:"id"             jsonschema:"required,description=Internal UUID of the client"`
-	ScopeID string `json:"scope_id"       jsonschema:"required,description=ID of the scope to add"`
+	Realm   string `json:"realm,omitempty" jsonschema:"Keycloak realm (uses default if omitted)"`
+	ID      string `json:"id"             jsonschema:"Internal UUID of the client"`
+	ScopeID string `json:"scope_id"       jsonschema:"ID of the scope to add"`
 }
 
 type removeClientDefaultScopeArgs struct {
-	Realm   string `json:"realm,omitempty" jsonschema:"description=Keycloak realm (uses default if omitted)"`
-	ID      string `json:"id"             jsonschema:"required,description=Internal UUID of the client"`
-	ScopeID string `json:"scope_id"       jsonschema:"required,description=ID of the scope to remove"`
+	Realm   string `json:"realm,omitempty" jsonschema:"Keycloak realm (uses default if omitted)"`
+	ID      string `json:"id"             jsonschema:"Internal UUID of the client"`
+	ScopeID string `json:"scope_id"       jsonschema:"ID of the scope to remove"`
 }
 
 type getClientOptionalScopesArgs struct {
-	Realm string `json:"realm,omitempty" jsonschema:"description=Keycloak realm (uses default if omitted)"`
-	ID    string `json:"id"             jsonschema:"required,description=Internal UUID of the client"`
+	Realm string `json:"realm,omitempty" jsonschema:"Keycloak realm (uses default if omitted)"`
+	ID    string `json:"id"             jsonschema:"Internal UUID of the client"`
 }
 
 type addClientOptionalScopeArgs struct {
-	Realm   string `json:"realm,omitempty" jsonschema:"description=Keycloak realm (uses default if omitted)"`
-	ID      string `json:"id"             jsonschema:"required,description=Internal UUID of the client"`
-	ScopeID string `json:"scope_id"       jsonschema:"required,description=ID of the scope to add"`
+	Realm   string `json:"realm,omitempty" jsonschema:"Keycloak realm (uses default if omitted)"`
+	ID      string `json:"id"             jsonschema:"Internal UUID of the client"`
+	ScopeID string `json:"scope_id"       jsonschema:"ID of the scope to add"`
 }
 
 type removeClientOptionalScopeArgs struct {
-	Realm   string `json:"realm,omitempty" jsonschema:"description=Keycloak realm (uses default if omitted)"`
-	ID      string `json:"id"             jsonschema:"required,description=Internal UUID of the client"`
-	ScopeID string `json:"scope_id"       jsonschema:"required,description=ID of the scope to remove"`
+	Realm   string `json:"realm,omitempty" jsonschema:"Keycloak realm (uses default if omitted)"`
+	ID      string `json:"id"             jsonschema:"Internal UUID of the client"`
+	ScopeID string `json:"scope_id"       jsonschema:"ID of the scope to remove"`
 }
 
 type createClientProtocolMapperArgs struct {
-	Realm      string            `json:"realm,omitempty"  jsonschema:"description=Keycloak realm (uses default if omitted)"`
-	ID         string            `json:"id"               jsonschema:"required,description=Internal UUID of the client"`
-	Name       string            `json:"name"             jsonschema:"required,description=Name of the protocol mapper"`
-	Protocol   string            `json:"protocol"         jsonschema:"required,description=Protocol (e.g. openid-connect)"`
-	MapperType string            `json:"mapper_type"      jsonschema:"required,description=Protocol mapper type (e.g. oidc-usermodel-attribute-mapper)"`
-	Config     map[string]string `json:"config"           jsonschema:"required,description=Mapper configuration key-value pairs"`
+	Realm      string            `json:"realm,omitempty"  jsonschema:"Keycloak realm (uses default if omitted)"`
+	ID         string            `json:"id"               jsonschema:"Internal UUID of the client"`
+	Name       string            `json:"name"             jsonschema:"Name of the protocol mapper"`
+	Protocol   string            `json:"protocol"         jsonschema:"Protocol (e.g. openid-connect)"`
+	MapperType string            `json:"mapper_type"      jsonschema:"Protocol mapper type (e.g. oidc-usermodel-attribute-mapper)"`
+	Config     map[string]string `json:"config"           jsonschema:"Mapper configuration key-value pairs"`
 }
 
 type updateClientProtocolMapperArgs struct {
-	Realm    string            `json:"realm,omitempty"  jsonschema:"description=Keycloak realm (uses default if omitted)"`
-	ID       string            `json:"id"               jsonschema:"required,description=Internal UUID of the client"`
-	MapperID string            `json:"mapper_id"        jsonschema:"required,description=ID of the protocol mapper"`
-	Name     *string           `json:"name,omitempty"   jsonschema:"description=New name for the mapper"`
-	Config   map[string]string `json:"config,omitempty" jsonschema:"description=Updated mapper configuration"`
+	Realm    string            `json:"realm,omitempty"  jsonschema:"Keycloak realm (uses default if omitted)"`
+	ID       string            `json:"id"               jsonschema:"Internal UUID of the client"`
+	MapperID string            `json:"mapper_id"        jsonschema:"ID of the protocol mapper"`
+	Name     *string           `json:"name,omitempty"   jsonschema:"New name for the mapper"`
+	Config   map[string]string `json:"config,omitempty" jsonschema:"Updated mapper configuration"`
 }
 
 type deleteClientProtocolMapperArgs struct {
-	Realm    string `json:"realm,omitempty" jsonschema:"description=Keycloak realm (uses default if omitted)"`
-	ID       string `json:"id"             jsonschema:"required,description=Internal UUID of the client"`
-	MapperID string `json:"mapper_id"      jsonschema:"required,description=ID of the protocol mapper"`
+	Realm    string `json:"realm,omitempty" jsonschema:"Keycloak realm (uses default if omitted)"`
+	ID       string `json:"id"             jsonschema:"Internal UUID of the client"`
+	MapperID string `json:"mapper_id"      jsonschema:"ID of the protocol mapper"`
 }
 
 type getClientSessionsArgs struct {
-	Realm string `json:"realm,omitempty" jsonschema:"description=Keycloak realm (uses default if omitted)"`
-	ID    string `json:"id"             jsonschema:"required,description=Internal UUID of the client"`
-	First *int   `json:"first,omitempty" jsonschema:"description=Pagination offset"`
-	Max   *int   `json:"max,omitempty"   jsonschema:"description=Maximum number of results"`
+	Realm string `json:"realm,omitempty" jsonschema:"Keycloak realm (uses default if omitted)"`
+	ID    string `json:"id"             jsonschema:"Internal UUID of the client"`
+	First *int   `json:"first,omitempty" jsonschema:"Pagination offset"`
+	Max   *int   `json:"max,omitempty"   jsonschema:"Maximum number of results"`
 }
 
 // ---------------------------------------------------------------------------

@@ -17,42 +17,42 @@ import (
 type listRealmsArgs struct{}
 
 type getRealmArgs struct {
-	Realm string `json:"realm" jsonschema:"description=The realm name,required"`
+	Realm string `json:"realm" jsonschema:"The realm name"`
 }
 
 type createRealmArgs struct {
-	Realm       string `json:"realm" jsonschema:"description=The name of the new realm,required"`
-	Enabled     *bool  `json:"enabled,omitempty" jsonschema:"description=Whether the realm is enabled (default true)"`
-	DisplayName string `json:"display_name,omitempty" jsonschema:"description=A human-friendly display name for the realm"`
+	Realm       string `json:"realm" jsonschema:"The name of the new realm"`
+	Enabled     *bool  `json:"enabled,omitempty" jsonschema:"Whether the realm is enabled (default true)"`
+	DisplayName string `json:"display_name,omitempty" jsonschema:"A human-friendly display name for the realm"`
 }
 
 type updateRealmArgs struct {
-	Realm                 string  `json:"realm" jsonschema:"description=The realm name to update,required"`
-	Enabled               *bool   `json:"enabled,omitempty" jsonschema:"description=Whether the realm is enabled"`
-	DisplayName           *string `json:"display_name,omitempty" jsonschema:"description=A human-friendly display name for the realm"`
-	RegistrationAllowed   *bool   `json:"registration_allowed,omitempty" jsonschema:"description=Whether user self-registration is allowed"`
-	ResetPasswordAllowed  *bool   `json:"reset_password_allowed,omitempty" jsonschema:"description=Whether password reset is allowed"`
-	RememberMe            *bool   `json:"remember_me,omitempty" jsonschema:"description=Whether the remember-me option is enabled"`
-	VerifyEmail           *bool   `json:"verify_email,omitempty" jsonschema:"description=Whether email verification is required"`
-	LoginWithEmailAllowed *bool   `json:"login_with_email_allowed,omitempty" jsonschema:"description=Whether login with email is allowed"`
-	DuplicateEmailsAllowed *bool  `json:"duplicate_emails_allowed,omitempty" jsonschema:"description=Whether duplicate email addresses are allowed"`
-	SSLRequired           *string `json:"ssl_required,omitempty" jsonschema:"description=SSL requirement (none/external/all)"`
+	Realm                 string  `json:"realm" jsonschema:"The realm name to update"`
+	Enabled               *bool   `json:"enabled,omitempty" jsonschema:"Whether the realm is enabled"`
+	DisplayName           *string `json:"display_name,omitempty" jsonschema:"A human-friendly display name for the realm"`
+	RegistrationAllowed   *bool   `json:"registration_allowed,omitempty" jsonschema:"Whether user self-registration is allowed"`
+	ResetPasswordAllowed  *bool   `json:"reset_password_allowed,omitempty" jsonschema:"Whether password reset is allowed"`
+	RememberMe            *bool   `json:"remember_me,omitempty" jsonschema:"Whether the remember-me option is enabled"`
+	VerifyEmail           *bool   `json:"verify_email,omitempty" jsonschema:"Whether email verification is required"`
+	LoginWithEmailAllowed *bool   `json:"login_with_email_allowed,omitempty" jsonschema:"Whether login with email is allowed"`
+	DuplicateEmailsAllowed *bool  `json:"duplicate_emails_allowed,omitempty" jsonschema:"Whether duplicate email addresses are allowed"`
+	SSLRequired           *string `json:"ssl_required,omitempty" jsonschema:"SSL requirement (none/external/all)"`
 }
 
 type deleteRealmArgs struct {
-	Realm string `json:"realm" jsonschema:"description=The realm name to delete,required"`
+	Realm string `json:"realm" jsonschema:"The realm name to delete"`
 }
 
 type clearRealmCacheArgs struct {
-	Realm string `json:"realm,omitempty" jsonschema:"description=The realm name (uses default realm if omitted)"`
+	Realm string `json:"realm,omitempty" jsonschema:"The realm name (uses default realm if omitted)"`
 }
 
 type clearUserCacheArgs struct {
-	Realm string `json:"realm,omitempty" jsonschema:"description=The realm name (uses default realm if omitted)"`
+	Realm string `json:"realm,omitempty" jsonschema:"The realm name (uses default realm if omitted)"`
 }
 
 type clearKeysCacheArgs struct {
-	Realm string `json:"realm,omitempty" jsonschema:"description=The realm name (uses default realm if omitted)"`
+	Realm string `json:"realm,omitempty" jsonschema:"The realm name (uses default realm if omitted)"`
 }
 
 // ---------------------------------------------------------------------------

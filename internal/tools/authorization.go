@@ -15,119 +15,119 @@ import (
 // ---------------------------------------------------------------------------
 
 type getResourceServerArgs struct {
-	Realm    string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	ClientID string `json:"client_id"       jsonschema:"description=Internal client UUID,required"`
+	Realm    string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	ClientID string `json:"client_id"       jsonschema:"Internal client UUID"`
 }
 
 type listResourcesArgs struct {
-	Realm    string `json:"realm,omitempty"     jsonschema:"description=Realm name (uses default if omitted)"`
-	ClientID string `json:"client_id"           jsonschema:"description=Internal client UUID,required"`
-	Name     string `json:"name,omitempty"      jsonschema:"description=Filter by resource name"`
-	URI      string `json:"uri,omitempty"       jsonschema:"description=Filter by resource URI"`
-	First    *int   `json:"first,omitempty"     jsonschema:"description=Pagination offset"`
-	Max      *int   `json:"max,omitempty"       jsonschema:"description=Maximum number of results"`
+	Realm    string `json:"realm,omitempty"     jsonschema:"Realm name (uses default if omitted)"`
+	ClientID string `json:"client_id"           jsonschema:"Internal client UUID"`
+	Name     string `json:"name,omitempty"      jsonschema:"Filter by resource name"`
+	URI      string `json:"uri,omitempty"       jsonschema:"Filter by resource URI"`
+	First    *int   `json:"first,omitempty"     jsonschema:"Pagination offset"`
+	Max      *int   `json:"max,omitempty"       jsonschema:"Maximum number of results"`
 }
 
 type getResourceArgs struct {
-	Realm      string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	ClientID   string `json:"client_id"       jsonschema:"description=Internal client UUID,required"`
-	ResourceID string `json:"resource_id"     jsonschema:"description=Resource ID,required"`
+	Realm      string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	ClientID   string `json:"client_id"       jsonschema:"Internal client UUID"`
+	ResourceID string `json:"resource_id"     jsonschema:"Resource ID"`
 }
 
 type createResourceArgs struct {
-	Realm       string   `json:"realm,omitempty"        jsonschema:"description=Realm name (uses default if omitted)"`
-	ClientID    string   `json:"client_id"              jsonschema:"description=Internal client UUID,required"`
-	Name        string   `json:"name"                   jsonschema:"description=Resource name,required"`
-	DisplayName string   `json:"display_name,omitempty" jsonschema:"description=Human-friendly display name"`
-	URIs        []string `json:"uris,omitempty"         jsonschema:"description=List of URIs protected by this resource"`
-	Type        string   `json:"type,omitempty"         jsonschema:"description=Resource type"`
-	Scopes      []string `json:"scopes,omitempty"       jsonschema:"description=List of scope names to associate with this resource"`
+	Realm       string   `json:"realm,omitempty"        jsonschema:"Realm name (uses default if omitted)"`
+	ClientID    string   `json:"client_id"              jsonschema:"Internal client UUID"`
+	Name        string   `json:"name"                   jsonschema:"Resource name"`
+	DisplayName string   `json:"display_name,omitempty" jsonschema:"Human-friendly display name"`
+	URIs        []string `json:"uris,omitempty"         jsonschema:"List of URIs protected by this resource"`
+	Type        string   `json:"type,omitempty"         jsonschema:"Resource type"`
+	Scopes      []string `json:"scopes,omitempty"       jsonschema:"List of scope names to associate with this resource"`
 }
 
 type updateResourceArgs struct {
-	Realm       string   `json:"realm,omitempty"        jsonschema:"description=Realm name (uses default if omitted)"`
-	ClientID    string   `json:"client_id"              jsonschema:"description=Internal client UUID,required"`
-	ResourceID  string   `json:"resource_id"            jsonschema:"description=Resource ID,required"`
-	Name        *string  `json:"name,omitempty"         jsonschema:"description=New resource name"`
-	DisplayName *string  `json:"display_name,omitempty" jsonschema:"description=New display name"`
-	URIs        []string `json:"uris,omitempty"         jsonschema:"description=New list of URIs"`
+	Realm       string   `json:"realm,omitempty"        jsonschema:"Realm name (uses default if omitted)"`
+	ClientID    string   `json:"client_id"              jsonschema:"Internal client UUID"`
+	ResourceID  string   `json:"resource_id"            jsonschema:"Resource ID"`
+	Name        *string  `json:"name,omitempty"         jsonschema:"New resource name"`
+	DisplayName *string  `json:"display_name,omitempty" jsonschema:"New display name"`
+	URIs        []string `json:"uris,omitempty"         jsonschema:"New list of URIs"`
 }
 
 type deleteResourceArgs struct {
-	Realm      string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	ClientID   string `json:"client_id"       jsonschema:"description=Internal client UUID,required"`
-	ResourceID string `json:"resource_id"     jsonschema:"description=Resource ID,required"`
+	Realm      string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	ClientID   string `json:"client_id"       jsonschema:"Internal client UUID"`
+	ResourceID string `json:"resource_id"     jsonschema:"Resource ID"`
 }
 
 type listAuthScopesArgs struct {
-	Realm    string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	ClientID string `json:"client_id"       jsonschema:"description=Internal client UUID,required"`
-	Name     string `json:"name,omitempty"  jsonschema:"description=Filter by scope name"`
-	First    *int   `json:"first,omitempty" jsonschema:"description=Pagination offset"`
-	Max      *int   `json:"max,omitempty"   jsonschema:"description=Maximum number of results"`
+	Realm    string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	ClientID string `json:"client_id"       jsonschema:"Internal client UUID"`
+	Name     string `json:"name,omitempty"  jsonschema:"Filter by scope name"`
+	First    *int   `json:"first,omitempty" jsonschema:"Pagination offset"`
+	Max      *int   `json:"max,omitempty"   jsonschema:"Maximum number of results"`
 }
 
 type createAuthScopeArgs struct {
-	Realm       string `json:"realm,omitempty"        jsonschema:"description=Realm name (uses default if omitted)"`
-	ClientID    string `json:"client_id"              jsonschema:"description=Internal client UUID,required"`
-	Name        string `json:"name"                   jsonschema:"description=Scope name,required"`
-	DisplayName string `json:"display_name,omitempty" jsonschema:"description=Human-friendly display name"`
+	Realm       string `json:"realm,omitempty"        jsonschema:"Realm name (uses default if omitted)"`
+	ClientID    string `json:"client_id"              jsonschema:"Internal client UUID"`
+	Name        string `json:"name"                   jsonschema:"Scope name"`
+	DisplayName string `json:"display_name,omitempty" jsonschema:"Human-friendly display name"`
 }
 
 type deleteAuthScopeArgs struct {
-	Realm    string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	ClientID string `json:"client_id"       jsonschema:"description=Internal client UUID,required"`
-	ScopeID  string `json:"scope_id"        jsonschema:"description=Scope ID,required"`
+	Realm    string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	ClientID string `json:"client_id"       jsonschema:"Internal client UUID"`
+	ScopeID  string `json:"scope_id"        jsonschema:"Scope ID"`
 }
 
 type listPoliciesArgs struct {
-	Realm    string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	ClientID string `json:"client_id"       jsonschema:"description=Internal client UUID,required"`
-	Name     string `json:"name,omitempty"  jsonschema:"description=Filter by policy name"`
-	First    *int   `json:"first,omitempty" jsonschema:"description=Pagination offset"`
-	Max      *int   `json:"max,omitempty"   jsonschema:"description=Maximum number of results"`
+	Realm    string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	ClientID string `json:"client_id"       jsonschema:"Internal client UUID"`
+	Name     string `json:"name,omitempty"  jsonschema:"Filter by policy name"`
+	First    *int   `json:"first,omitempty" jsonschema:"Pagination offset"`
+	Max      *int   `json:"max,omitempty"   jsonschema:"Maximum number of results"`
 }
 
 type getPolicyArgs struct {
-	Realm    string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	ClientID string `json:"client_id"       jsonschema:"description=Internal client UUID,required"`
-	PolicyID string `json:"policy_id"       jsonschema:"description=Policy ID,required"`
+	Realm    string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	ClientID string `json:"client_id"       jsonschema:"Internal client UUID"`
+	PolicyID string `json:"policy_id"       jsonschema:"Policy ID"`
 }
 
 type createPolicyArgs struct {
-	Realm       string            `json:"realm,omitempty"       jsonschema:"description=Realm name (uses default if omitted)"`
-	ClientID    string            `json:"client_id"             jsonschema:"description=Internal client UUID,required"`
-	Name        string            `json:"name"                  jsonschema:"description=Policy name,required"`
-	Type        string            `json:"type"                  jsonschema:"description=Policy type (e.g. role\\, user\\, client\\, js),required"`
-	Logic       string            `json:"logic,omitempty"       jsonschema:"description=Policy logic: POSITIVE or NEGATIVE"`
-	Description string            `json:"description,omitempty" jsonschema:"description=Policy description"`
-	Config      map[string]string `json:"config,omitempty"      jsonschema:"description=Policy configuration map"`
+	Realm       string            `json:"realm,omitempty"       jsonschema:"Realm name (uses default if omitted)"`
+	ClientID    string            `json:"client_id"             jsonschema:"Internal client UUID"`
+	Name        string            `json:"name"                  jsonschema:"Policy name"`
+	Type        string            `json:"type"                  jsonschema:"Policy type (e.g. role\\, user\\, client\\, js)"`
+	Logic       string            `json:"logic,omitempty"       jsonschema:"Policy logic: POSITIVE or NEGATIVE"`
+	Description string            `json:"description,omitempty" jsonschema:"Policy description"`
+	Config      map[string]string `json:"config,omitempty"      jsonschema:"Policy configuration map"`
 }
 
 type deletePolicyArgs struct {
-	Realm    string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	ClientID string `json:"client_id"       jsonschema:"description=Internal client UUID,required"`
-	PolicyID string `json:"policy_id"       jsonschema:"description=Policy ID,required"`
+	Realm    string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	ClientID string `json:"client_id"       jsonschema:"Internal client UUID"`
+	PolicyID string `json:"policy_id"       jsonschema:"Policy ID"`
 }
 
 type listPermissionsArgs struct {
-	Realm    string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	ClientID string `json:"client_id"       jsonschema:"description=Internal client UUID,required"`
-	Name     string `json:"name,omitempty"  jsonschema:"description=Filter by permission name"`
-	First    *int   `json:"first,omitempty" jsonschema:"description=Pagination offset"`
-	Max      *int   `json:"max,omitempty"   jsonschema:"description=Maximum number of results"`
+	Realm    string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	ClientID string `json:"client_id"       jsonschema:"Internal client UUID"`
+	Name     string `json:"name,omitempty"  jsonschema:"Filter by permission name"`
+	First    *int   `json:"first,omitempty" jsonschema:"Pagination offset"`
+	Max      *int   `json:"max,omitempty"   jsonschema:"Maximum number of results"`
 }
 
 type createPermissionArgs struct {
-	Realm            string   `json:"realm,omitempty"             jsonschema:"description=Realm name (uses default if omitted)"`
-	ClientID         string   `json:"client_id"                   jsonschema:"description=Internal client UUID,required"`
-	Name             string   `json:"name"                        jsonschema:"description=Permission name,required"`
-	Type             string   `json:"type"                        jsonschema:"description=Permission type: resource or scope,required"`
-	Description      string   `json:"description,omitempty"       jsonschema:"description=Permission description"`
-	Resources        []string `json:"resources,omitempty"         jsonschema:"description=List of resource IDs"`
-	Scopes           []string `json:"scopes,omitempty"            jsonschema:"description=List of scope IDs"`
-	Policies         []string `json:"policies,omitempty"          jsonschema:"description=List of policy IDs"`
-	DecisionStrategy string   `json:"decision_strategy,omitempty" jsonschema:"description=Decision strategy: UNANIMOUS\\, AFFIRMATIVE\\, or CONSENSUS"`
+	Realm            string   `json:"realm,omitempty"             jsonschema:"Realm name (uses default if omitted)"`
+	ClientID         string   `json:"client_id"                   jsonschema:"Internal client UUID"`
+	Name             string   `json:"name"                        jsonschema:"Permission name"`
+	Type             string   `json:"type"                        jsonschema:"Permission type: resource or scope"`
+	Description      string   `json:"description,omitempty"       jsonschema:"Permission description"`
+	Resources        []string `json:"resources,omitempty"         jsonschema:"List of resource IDs"`
+	Scopes           []string `json:"scopes,omitempty"            jsonschema:"List of scope IDs"`
+	Policies         []string `json:"policies,omitempty"          jsonschema:"List of policy IDs"`
+	DecisionStrategy string   `json:"decision_strategy,omitempty" jsonschema:"Decision strategy: UNANIMOUS\\, AFFIRMATIVE\\, or CONSENSUS"`
 }
 
 // ---------------------------------------------------------------------------
