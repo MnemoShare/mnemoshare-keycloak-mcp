@@ -1,0 +1,57 @@
+name: Feature Request
+description: Suggest a new tool, enhancement, or improvement
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have an idea for a new tool or improvement? We'd love to hear it!
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      description: What area does this relate to?
+      options:
+        - New tool (Keycloak API coverage)
+        - Existing tool improvement
+        - Transport / connectivity
+        - Authentication
+        - Developer experience
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What would you like?
+      description: Describe the feature or enhancement you'd like to see.
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use case
+      description: What problem does this solve? How would you use it?
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Have you found any workarounds or alternative approaches?
+    validations:
+      required: false
+
+  - type: input
+    id: keycloak-api
+    attributes:
+      label: Keycloak API endpoint (if applicable)
+      description: Link to the relevant Keycloak REST API docs if this is about API coverage.
+      placeholder: "e.g. https://www.keycloak.org/docs-api/latest/rest-api/#_users"
+    validations:
+      required: false

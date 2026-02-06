@@ -1,0 +1,97 @@
+name: Bug Report
+description: Report a bug or unexpected behavior
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill out the details below so we can reproduce and fix it.
+
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Which version of keycloak-mcp are you using?
+      placeholder: "e.g. v1.0.0 or built from source (commit hash)"
+    validations:
+      required: true
+
+  - type: input
+    id: keycloak-version
+    attributes:
+      label: Keycloak Version
+      description: Which version of Keycloak are you connecting to?
+      placeholder: "e.g. 24.0.1"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: transport
+    attributes:
+      label: Transport Mode
+      options:
+        - stdio
+        - http
+    validations:
+      required: true
+
+  - type: dropdown
+    id: auth-mode
+    attributes:
+      label: Auth Mode
+      options:
+        - client_credentials
+        - password
+    validations:
+      required: true
+
+  - type: input
+    id: client
+    attributes:
+      label: MCP Client
+      description: Which MCP client are you using?
+      placeholder: "e.g. Claude Code, Cursor, custom client"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Describe the bug. What did you expect to happen vs. what actually happened?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: How can we reproduce this? Include the tool name and parameters if applicable.
+      placeholder: |
+        1. Call tool `create_user` with parameters...
+        2. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: Paste any error messages or log output. Set `LOG_LEVEL=debug` for more detail.
+      render: shell
+    validations:
+      required: false
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating System
+      options:
+        - macOS (Apple Silicon)
+        - macOS (Intel)
+        - Linux x86_64
+        - Linux ARM64
+        - Windows (WSL)
+        - Other
+    validations:
+      required: true
