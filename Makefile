@@ -1,10 +1,11 @@
 .PHONY: build run run-http clean tidy docker-build
 
-BINARY := keycloak-mcp
-IMAGE  := mnemoshare/keycloak-mcp
+BINARY  := keycloak-mcp
+IMAGE   := mnemoshare/keycloak-mcp
+VERSION := $(shell git describe --tags --always --dirty 2>/dev/null || echo dev)
 
 build:
-	go build -o $(BINARY) ./cmd/server
+	go build -ldflags="-s -w -X main.version=$(VERSION)" -o $(BINARY) ./cmd/server
 
 run: build
 	TRANSPORT=stdio ./$(BINARY)

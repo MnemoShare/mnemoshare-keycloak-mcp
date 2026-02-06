@@ -18,6 +18,8 @@ import (
 	"github.com/mnemoshare/mnemoshare-keycloak-mcp/internal/tools"
 )
 
+var version = "dev"
+
 func main() {
 	cfg := config.Load()
 	initLogger(cfg)
@@ -34,7 +36,7 @@ func main() {
 
 	// MCP server
 	s := mcp.NewServer(
-		&mcp.Implementation{Name: "keycloak-mcp", Version: "1.0.0"},
+		&mcp.Implementation{Name: "keycloak-mcp", Version: version},
 		nil,
 	)
 
