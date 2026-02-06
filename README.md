@@ -102,7 +102,39 @@ Endpoints:
 
 ## Keycloak Setup
 
-The server needs a service account with admin privileges. Create one in Keycloak:
+### Fresh install: bootstrap with password mode
+
+On a fresh Keycloak instance you won't have a service account yet, but you do have the admin username and password. Start with `password` mode so Claude Code can connect and create the service account for you:
+
+```json
+{
+  "mcpServers": {
+    "keycloak": {
+      "command": "keycloak-mcp",
+      "env": {
+        "TRANSPORT": "stdio",
+        "KEYCLOAK_URL": "https://id.example.com",
+        "KEYCLOAK_AUTH_MODE": "password",
+        "KEYCLOAK_ADMIN_USER": "admin",
+        "KEYCLOAK_ADMIN_PASSWORD": "your-admin-password",
+        "KEYCLOAK_DEFAULT_REALM": "your-realm"
+      }
+    }
+  }
+}
+```
+
+Once connected, ask Claude Code to:
+
+1. Create a confidential client (e.g. `mcp-admin`) in the **master** realm
+2. Assign the `admin` realm role to its service account
+3. Retrieve the client secret
+
+Then switch your `.mcp.json` to `client_credentials` mode (see below) and remove the admin password from your config. This is more secure for ongoing use — the service account has a rotatable secret and doesn't expose your admin credentials.
+
+### Recommended: client credentials mode
+
+For day-to-day use, configure a service account client. If you prefer to set it up manually in the Keycloak admin console:
 
 1. Go to **master** realm > **Clients** > **Create client**
 2. Set Client ID (e.g. `mcp-admin`), enable **Client authentication**
