@@ -1,0 +1,7 @@
+.git
+.env
+.env.local
+keycloak-mcp
+dist/
+vendor/
+*.md
