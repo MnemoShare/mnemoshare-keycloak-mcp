@@ -2,5 +2,6 @@ keycloak-mcp
 *.exe
 .env
 .env.local
+.mcp.json
 dist/
 vendor/
