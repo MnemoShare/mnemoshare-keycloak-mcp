@@ -14,72 +14,72 @@ import (
 // ---------------------------------------------------------------------------
 
 type listGroupsArgs struct {
-	Realm  string `json:"realm,omitempty"  jsonschema:"description=Realm name (uses default if omitted)"`
-	Search string `json:"search,omitempty" jsonschema:"description=Search string for group name"`
-	First  *int   `json:"first,omitempty"  jsonschema:"description=Pagination offset"`
-	Max    *int   `json:"max,omitempty"    jsonschema:"description=Maximum number of results"`
+	Realm  string `json:"realm,omitempty"  jsonschema:"Realm name (uses default if omitted)"`
+	Search string `json:"search,omitempty" jsonschema:"Search string for group name"`
+	First  *int   `json:"first,omitempty"  jsonschema:"Pagination offset"`
+	Max    *int   `json:"max,omitempty"    jsonschema:"Maximum number of results"`
 }
 
 type getGroupArgs struct {
-	Realm   string `json:"realm,omitempty"    jsonschema:"description=Realm name (uses default if omitted)"`
-	GroupID string `json:"group_id"           jsonschema:"description=Group ID,required"`
+	Realm   string `json:"realm,omitempty"    jsonschema:"Realm name (uses default if omitted)"`
+	GroupID string `json:"group_id"           jsonschema:"Group ID"`
 }
 
 type createGroupArgs struct {
-	Realm string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	Name  string `json:"name"           jsonschema:"description=Group name,required"`
+	Realm string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	Name  string `json:"name"           jsonschema:"Group name"`
 }
 
 type createChildGroupArgs struct {
-	Realm         string `json:"realm,omitempty"    jsonschema:"description=Realm name (uses default if omitted)"`
-	ParentGroupID string `json:"parent_group_id"   jsonschema:"description=Parent group ID,required"`
-	Name          string `json:"name"              jsonschema:"description=Child group name,required"`
+	Realm         string `json:"realm,omitempty"    jsonschema:"Realm name (uses default if omitted)"`
+	ParentGroupID string `json:"parent_group_id"   jsonschema:"Parent group ID"`
+	Name          string `json:"name"              jsonschema:"Child group name"`
 }
 
 type updateGroupArgs struct {
-	Realm   string `json:"realm,omitempty"    jsonschema:"description=Realm name (uses default if omitted)"`
-	GroupID string `json:"group_id"           jsonschema:"description=Group ID,required"`
-	Name    string `json:"name"              jsonschema:"description=New group name,required"`
+	Realm   string `json:"realm,omitempty"    jsonschema:"Realm name (uses default if omitted)"`
+	GroupID string `json:"group_id"           jsonschema:"Group ID"`
+	Name    string `json:"name"              jsonschema:"New group name"`
 }
 
 type deleteGroupArgs struct {
-	Realm   string `json:"realm,omitempty"    jsonschema:"description=Realm name (uses default if omitted)"`
-	GroupID string `json:"group_id"           jsonschema:"description=Group ID,required"`
+	Realm   string `json:"realm,omitempty"    jsonschema:"Realm name (uses default if omitted)"`
+	GroupID string `json:"group_id"           jsonschema:"Group ID"`
 }
 
 type getGroupMembersArgs struct {
-	Realm   string `json:"realm,omitempty"    jsonschema:"description=Realm name (uses default if omitted)"`
-	GroupID string `json:"group_id"           jsonschema:"description=Group ID,required"`
-	First   *int   `json:"first,omitempty"    jsonschema:"description=Pagination offset"`
-	Max     *int   `json:"max,omitempty"      jsonschema:"description=Maximum number of results"`
+	Realm   string `json:"realm,omitempty"    jsonschema:"Realm name (uses default if omitted)"`
+	GroupID string `json:"group_id"           jsonschema:"Group ID"`
+	First   *int   `json:"first,omitempty"    jsonschema:"Pagination offset"`
+	Max     *int   `json:"max,omitempty"      jsonschema:"Maximum number of results"`
 }
 
 type countGroupsArgs struct {
-	Realm  string `json:"realm,omitempty"  jsonschema:"description=Realm name (uses default if omitted)"`
-	Search string `json:"search,omitempty" jsonschema:"description=Search string to filter groups"`
+	Realm  string `json:"realm,omitempty"  jsonschema:"Realm name (uses default if omitted)"`
+	Search string `json:"search,omitempty" jsonschema:"Search string to filter groups"`
 }
 
 type getGroupRealmRolesArgs struct {
-	Realm   string `json:"realm,omitempty"    jsonschema:"description=Realm name (uses default if omitted)"`
-	GroupID string `json:"group_id"           jsonschema:"description=Group ID,required"`
+	Realm   string `json:"realm,omitempty"    jsonschema:"Realm name (uses default if omitted)"`
+	GroupID string `json:"group_id"           jsonschema:"Group ID"`
 }
 
 type addGroupRealmRolesArgs struct {
-	Realm   string   `json:"realm,omitempty"    jsonschema:"description=Realm name (uses default if omitted)"`
-	GroupID string   `json:"group_id"           jsonschema:"description=Group ID,required"`
-	Roles   []string `json:"roles"             jsonschema:"description=List of realm role names to add,required"`
+	Realm   string   `json:"realm,omitempty"    jsonschema:"Realm name (uses default if omitted)"`
+	GroupID string   `json:"group_id"           jsonschema:"Group ID"`
+	Roles   []string `json:"roles"             jsonschema:"List of realm role names to add"`
 }
 
 type removeGroupRealmRolesArgs struct {
-	Realm   string   `json:"realm,omitempty"    jsonschema:"description=Realm name (uses default if omitted)"`
-	GroupID string   `json:"group_id"           jsonschema:"description=Group ID,required"`
-	Roles   []string `json:"roles"             jsonschema:"description=List of realm role names to remove,required"`
+	Realm   string   `json:"realm,omitempty"    jsonschema:"Realm name (uses default if omitted)"`
+	GroupID string   `json:"group_id"           jsonschema:"Group ID"`
+	Roles   []string `json:"roles"             jsonschema:"List of realm role names to remove"`
 }
 
 type getGroupClientRolesArgs struct {
-	Realm    string `json:"realm,omitempty"    jsonschema:"description=Realm name (uses default if omitted)"`
-	GroupID  string `json:"group_id"           jsonschema:"description=Group ID,required"`
-	ClientID string `json:"client_id"         jsonschema:"description=Client UUID (id of the client),required"`
+	Realm    string `json:"realm,omitempty"    jsonschema:"Realm name (uses default if omitted)"`
+	GroupID  string `json:"group_id"           jsonschema:"Group ID"`
+	ClientID string `json:"client_id"         jsonschema:"Client UUID (id of the client)"`
 }
 
 // ---------------------------------------------------------------------------

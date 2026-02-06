@@ -16,65 +16,65 @@ import (
 // ---------------------------------------------------------------------------
 
 type listClientScopesArgs struct {
-	Realm string `json:"realm,omitempty" jsonschema:"description=The realm name (uses default realm if omitted)"`
+	Realm string `json:"realm,omitempty" jsonschema:"The realm name (uses default realm if omitted)"`
 }
 
 type getClientScopeArgs struct {
-	Realm   string `json:"realm,omitempty" jsonschema:"description=The realm name (uses default realm if omitted)"`
-	ScopeID string `json:"scope_id" jsonschema:"description=The client scope ID"`
+	Realm   string `json:"realm,omitempty" jsonschema:"The realm name (uses default realm if omitted)"`
+	ScopeID string `json:"scope_id" jsonschema:"The client scope ID"`
 }
 
 type createClientScopeArgs struct {
-	Realm       string `json:"realm,omitempty" jsonschema:"description=The realm name (uses default realm if omitted)"`
-	Name        string `json:"name" jsonschema:"description=The name of the client scope"`
-	Description string `json:"description,omitempty" jsonschema:"description=A description of the client scope"`
-	Protocol    string `json:"protocol,omitempty" jsonschema:"description=The protocol (default openid-connect)"`
-	Type        string `json:"type,omitempty" jsonschema:"description=The scope type: default or optional"`
+	Realm       string `json:"realm,omitempty" jsonschema:"The realm name (uses default realm if omitted)"`
+	Name        string `json:"name" jsonschema:"The name of the client scope"`
+	Description string `json:"description,omitempty" jsonschema:"A description of the client scope"`
+	Protocol    string `json:"protocol,omitempty" jsonschema:"The protocol (default openid-connect)"`
+	Type        string `json:"type,omitempty" jsonschema:"The scope type: default or optional"`
 }
 
 type updateClientScopeArgs struct {
-	Realm       string  `json:"realm,omitempty" jsonschema:"description=The realm name (uses default realm if omitted)"`
-	ScopeID     string  `json:"scope_id" jsonschema:"description=The client scope ID to update"`
-	Name        *string `json:"name,omitempty" jsonschema:"description=The new name of the client scope"`
-	Description *string `json:"description,omitempty" jsonschema:"description=The new description of the client scope"`
-	Protocol    *string `json:"protocol,omitempty" jsonschema:"description=The new protocol of the client scope"`
+	Realm       string  `json:"realm,omitempty" jsonschema:"The realm name (uses default realm if omitted)"`
+	ScopeID     string  `json:"scope_id" jsonschema:"The client scope ID to update"`
+	Name        *string `json:"name,omitempty" jsonschema:"The new name of the client scope"`
+	Description *string `json:"description,omitempty" jsonschema:"The new description of the client scope"`
+	Protocol    *string `json:"protocol,omitempty" jsonschema:"The new protocol of the client scope"`
 }
 
 type deleteClientScopeArgs struct {
-	Realm   string `json:"realm,omitempty" jsonschema:"description=The realm name (uses default realm if omitted)"`
-	ScopeID string `json:"scope_id" jsonschema:"description=The client scope ID to delete"`
+	Realm   string `json:"realm,omitempty" jsonschema:"The realm name (uses default realm if omitted)"`
+	ScopeID string `json:"scope_id" jsonschema:"The client scope ID to delete"`
 }
 
 type listClientScopeProtocolMappersArgs struct {
-	Realm   string `json:"realm,omitempty" jsonschema:"description=The realm name (uses default realm if omitted)"`
-	ScopeID string `json:"scope_id" jsonschema:"description=The client scope ID"`
+	Realm   string `json:"realm,omitempty" jsonschema:"The realm name (uses default realm if omitted)"`
+	ScopeID string `json:"scope_id" jsonschema:"The client scope ID"`
 }
 
 type createClientScopeProtocolMapperArgs struct {
-	Realm      string            `json:"realm,omitempty" jsonschema:"description=The realm name (uses default realm if omitted)"`
-	ScopeID    string            `json:"scope_id" jsonschema:"description=The client scope ID"`
-	Name       string            `json:"name" jsonschema:"description=The name of the protocol mapper"`
-	Protocol   string            `json:"protocol" jsonschema:"description=The protocol (e.g. openid-connect)"`
-	MapperType string            `json:"mapper_type" jsonschema:"description=The protocol mapper type (e.g. oidc-usermodel-attribute-mapper)"`
-	Config     map[string]string `json:"config" jsonschema:"description=The mapper configuration as key-value pairs"`
+	Realm      string            `json:"realm,omitempty" jsonschema:"The realm name (uses default realm if omitted)"`
+	ScopeID    string            `json:"scope_id" jsonschema:"The client scope ID"`
+	Name       string            `json:"name" jsonschema:"The name of the protocol mapper"`
+	Protocol   string            `json:"protocol" jsonschema:"The protocol (e.g. openid-connect)"`
+	MapperType string            `json:"mapper_type" jsonschema:"The protocol mapper type (e.g. oidc-usermodel-attribute-mapper)"`
+	Config     map[string]string `json:"config" jsonschema:"The mapper configuration as key-value pairs"`
 }
 
 type updateClientScopeProtocolMapperArgs struct {
-	Realm    string             `json:"realm,omitempty" jsonschema:"description=The realm name (uses default realm if omitted)"`
-	ScopeID  string             `json:"scope_id" jsonschema:"description=The client scope ID"`
-	MapperID string             `json:"mapper_id" jsonschema:"description=The protocol mapper ID to update"`
-	Name     *string            `json:"name,omitempty" jsonschema:"description=The new name of the protocol mapper"`
-	Config   map[string]string  `json:"config,omitempty" jsonschema:"description=Updated mapper configuration as key-value pairs"`
+	Realm    string             `json:"realm,omitempty" jsonschema:"The realm name (uses default realm if omitted)"`
+	ScopeID  string             `json:"scope_id" jsonschema:"The client scope ID"`
+	MapperID string             `json:"mapper_id" jsonschema:"The protocol mapper ID to update"`
+	Name     *string            `json:"name,omitempty" jsonschema:"The new name of the protocol mapper"`
+	Config   map[string]string  `json:"config,omitempty" jsonschema:"Updated mapper configuration as key-value pairs"`
 }
 
 type deleteClientScopeProtocolMapperArgs struct {
-	Realm    string `json:"realm,omitempty" jsonschema:"description=The realm name (uses default realm if omitted)"`
-	ScopeID  string `json:"scope_id" jsonschema:"description=The client scope ID"`
-	MapperID string `json:"mapper_id" jsonschema:"description=The protocol mapper ID to delete"`
+	Realm    string `json:"realm,omitempty" jsonschema:"The realm name (uses default realm if omitted)"`
+	ScopeID  string `json:"scope_id" jsonschema:"The client scope ID"`
+	MapperID string `json:"mapper_id" jsonschema:"The protocol mapper ID to delete"`
 }
 
 type getDefaultClientScopesArgs struct {
-	Realm string `json:"realm,omitempty" jsonschema:"description=The realm name (uses default realm if omitted)"`
+	Realm string `json:"realm,omitempty" jsonschema:"The realm name (uses default realm if omitted)"`
 }
 
 // ---------------------------------------------------------------------------

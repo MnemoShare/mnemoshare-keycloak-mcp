@@ -15,60 +15,60 @@ import (
 // ---------------------------------------------------------------------------
 
 type listAuthFlowsArgs struct {
-	Realm string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
+	Realm string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
 }
 
 type getAuthFlowArgs struct {
-	Realm  string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	FlowID string `json:"flow_id"         jsonschema:"description=Authentication flow ID,required"`
+	Realm  string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	FlowID string `json:"flow_id"         jsonschema:"Authentication flow ID"`
 }
 
 type createAuthFlowArgs struct {
-	Realm       string `json:"realm,omitempty"       jsonschema:"description=Realm name (uses default if omitted)"`
-	Alias       string `json:"alias"                 jsonschema:"description=Unique alias for the authentication flow,required"`
-	Description string `json:"description,omitempty" jsonschema:"description=Description of the authentication flow"`
-	ProviderID  string `json:"provider_id"           jsonschema:"description=Provider ID for the flow (e.g. basic-flow),required"`
-	TopLevel    *bool  `json:"top_level,omitempty"   jsonschema:"description=Whether this is a top-level flow (default true)"`
-	BuiltIn     *bool  `json:"built_in,omitempty"    jsonschema:"description=Whether this is a built-in flow (default false)"`
+	Realm       string `json:"realm,omitempty"       jsonschema:"Realm name (uses default if omitted)"`
+	Alias       string `json:"alias"                 jsonschema:"Unique alias for the authentication flow"`
+	Description string `json:"description,omitempty" jsonschema:"Description of the authentication flow"`
+	ProviderID  string `json:"provider_id"           jsonschema:"Provider ID for the flow (e.g. basic-flow)"`
+	TopLevel    *bool  `json:"top_level,omitempty"   jsonschema:"Whether this is a top-level flow (default true)"`
+	BuiltIn     *bool  `json:"built_in,omitempty"    jsonschema:"Whether this is a built-in flow (default false)"`
 }
 
 type deleteAuthFlowArgs struct {
-	Realm  string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	FlowID string `json:"flow_id"         jsonschema:"description=Authentication flow ID to delete,required"`
+	Realm  string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	FlowID string `json:"flow_id"         jsonschema:"Authentication flow ID to delete"`
 }
 
 type getAuthFlowExecutionsArgs struct {
-	Realm     string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	FlowAlias string `json:"flow_alias"      jsonschema:"description=Alias of the authentication flow,required"`
+	Realm     string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	FlowAlias string `json:"flow_alias"      jsonschema:"Alias of the authentication flow"`
 }
 
 type updateAuthFlowExecutionArgs struct {
-	Realm       string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	FlowAlias   string `json:"flow_alias"      jsonschema:"description=Alias of the parent authentication flow,required"`
-	ExecutionID string `json:"execution_id"    jsonschema:"description=ID of the execution to update,required"`
-	Requirement string `json:"requirement"     jsonschema:"description=Requirement level: REQUIRED ALTERNATIVE DISABLED or CONDITIONAL,required"`
+	Realm       string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	FlowAlias   string `json:"flow_alias"      jsonschema:"Alias of the parent authentication flow"`
+	ExecutionID string `json:"execution_id"    jsonschema:"ID of the execution to update"`
+	Requirement string `json:"requirement"     jsonschema:"Requirement level: REQUIRED ALTERNATIVE DISABLED or CONDITIONAL"`
 }
 
 type listRequiredActionsArgs struct {
-	Realm string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
+	Realm string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
 }
 
 type getRequiredActionArgs struct {
-	Realm string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	Alias string `json:"alias"           jsonschema:"description=Alias of the required action,required"`
+	Realm string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	Alias string `json:"alias"           jsonschema:"Alias of the required action"`
 }
 
 type updateRequiredActionArgs struct {
-	Realm         string  `json:"realm,omitempty"          jsonschema:"description=Realm name (uses default if omitted)"`
-	Alias         string  `json:"alias"                    jsonschema:"description=Alias of the required action to update,required"`
-	Name          *string `json:"name,omitempty"           jsonschema:"description=Display name of the required action"`
-	Enabled       *bool   `json:"enabled,omitempty"        jsonschema:"description=Whether the required action is enabled"`
-	DefaultAction *bool   `json:"default_action,omitempty" jsonschema:"description=Whether this is a default action for new users"`
+	Realm         string  `json:"realm,omitempty"          jsonschema:"Realm name (uses default if omitted)"`
+	Alias         string  `json:"alias"                    jsonschema:"Alias of the required action to update"`
+	Name          *string `json:"name,omitempty"           jsonschema:"Display name of the required action"`
+	Enabled       *bool   `json:"enabled,omitempty"        jsonschema:"Whether the required action is enabled"`
+	DefaultAction *bool   `json:"default_action,omitempty" jsonschema:"Whether this is a default action for new users"`
 }
 
 type deleteRequiredActionArgs struct {
-	Realm string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	Alias string `json:"alias"           jsonschema:"description=Alias of the required action to delete,required"`
+	Realm string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	Alias string `json:"alias"           jsonschema:"Alias of the required action to delete"`
 }
 
 // ---------------------------------------------------------------------------

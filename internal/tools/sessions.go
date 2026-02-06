@@ -14,35 +14,35 @@ import (
 // ---------------------------------------------------------------------------
 
 type logoutUserAllSessionsArgs struct {
-	Realm  string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	UserID string `json:"user_id"         jsonschema:"required,description=User ID to logout from all sessions"`
+	Realm  string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	UserID string `json:"user_id"         jsonschema:"User ID to logout from all sessions"`
 }
 
 type logoutUserSessionArgs struct {
-	Realm     string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	SessionID string `json:"session_id"      jsonschema:"required,description=Session ID to logout"`
+	Realm     string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	SessionID string `json:"session_id"      jsonschema:"Session ID to logout"`
 }
 
 type getEventsArgs struct {
-	Realm  string `json:"realm,omitempty"  jsonschema:"description=Realm name (uses default if omitted)"`
-	Type   string `json:"type,omitempty"   jsonschema:"description=Event type filter"`
-	Client string `json:"client,omitempty" jsonschema:"description=Client filter"`
-	User   string `json:"user,omitempty"   jsonschema:"description=User filter"`
-	First  *int   `json:"first,omitempty"  jsonschema:"description=Pagination offset"`
-	Max    *int   `json:"max,omitempty"    jsonschema:"description=Maximum number of results"`
+	Realm  string `json:"realm,omitempty"  jsonschema:"Realm name (uses default if omitted)"`
+	Type   string `json:"type,omitempty"   jsonschema:"Event type filter"`
+	Client string `json:"client,omitempty" jsonschema:"Client filter"`
+	User   string `json:"user,omitempty"   jsonschema:"User filter"`
+	First  *int   `json:"first,omitempty"  jsonschema:"Pagination offset"`
+	Max    *int   `json:"max,omitempty"    jsonschema:"Maximum number of results"`
 }
 
 type getClientOfflineSessionsArgs struct {
-	Realm    string `json:"realm,omitempty"  jsonschema:"description=Realm name (uses default if omitted)"`
-	ClientID string `json:"client_id"        jsonschema:"required,description=Internal UUID of the client"`
-	First    *int   `json:"first,omitempty"  jsonschema:"description=Pagination offset"`
-	Max      *int   `json:"max,omitempty"    jsonschema:"description=Maximum number of results"`
+	Realm    string `json:"realm,omitempty"  jsonschema:"Realm name (uses default if omitted)"`
+	ClientID string `json:"client_id"        jsonschema:"Internal UUID of the client"`
+	First    *int   `json:"first,omitempty"  jsonschema:"Pagination offset"`
+	Max      *int   `json:"max,omitempty"    jsonschema:"Maximum number of results"`
 }
 
 type revokeUserConsentsArgs struct {
-	Realm    string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	UserID   string `json:"user_id"         jsonschema:"required,description=User ID"`
-	ClientID string `json:"client_id"       jsonschema:"required,description=The clientId string (not UUID)"`
+	Realm    string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	UserID   string `json:"user_id"         jsonschema:"User ID"`
+	ClientID string `json:"client_id"       jsonschema:"The clientId string (not UUID)"`
 }
 
 // ---------------------------------------------------------------------------

@@ -14,97 +14,97 @@ import (
 // ---------------------------------------------------------------------------
 
 type listRealmRolesArgs struct {
-	Realm string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	First *int   `json:"first,omitempty" jsonschema:"description=Pagination offset"`
-	Max   *int   `json:"max,omitempty"   jsonschema:"description=Maximum number of results"`
+	Realm string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	First *int   `json:"first,omitempty" jsonschema:"Pagination offset"`
+	Max   *int   `json:"max,omitempty"   jsonschema:"Maximum number of results"`
 }
 
 type getRealmRoleArgs struct {
-	Realm    string `json:"realm,omitempty"  jsonschema:"description=Realm name (uses default if omitted)"`
-	RoleName string `json:"role_name"        jsonschema:"description=Role name,required"`
+	Realm    string `json:"realm,omitempty"  jsonschema:"Realm name (uses default if omitted)"`
+	RoleName string `json:"role_name"        jsonschema:"Role name"`
 }
 
 type createRealmRoleArgs struct {
-	Realm       string `json:"realm,omitempty"       jsonschema:"description=Realm name (uses default if omitted)"`
-	Name        string `json:"name"                  jsonschema:"description=Role name,required"`
-	Description string `json:"description,omitempty" jsonschema:"description=Role description"`
+	Realm       string `json:"realm,omitempty"       jsonschema:"Realm name (uses default if omitted)"`
+	Name        string `json:"name"                  jsonschema:"Role name"`
+	Description string `json:"description,omitempty" jsonschema:"Role description"`
 }
 
 type updateRealmRoleArgs struct {
-	Realm       string  `json:"realm,omitempty"       jsonschema:"description=Realm name (uses default if omitted)"`
-	RoleName    string  `json:"role_name"             jsonschema:"description=Current role name,required"`
-	Name        *string `json:"name,omitempty"        jsonschema:"description=New role name"`
-	Description *string `json:"description,omitempty" jsonschema:"description=New role description"`
+	Realm       string  `json:"realm,omitempty"       jsonschema:"Realm name (uses default if omitted)"`
+	RoleName    string  `json:"role_name"             jsonschema:"Current role name"`
+	Name        *string `json:"name,omitempty"        jsonschema:"New role name"`
+	Description *string `json:"description,omitempty" jsonschema:"New role description"`
 }
 
 type deleteRealmRoleArgs struct {
-	Realm    string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	RoleName string `json:"role_name"       jsonschema:"description=Role name,required"`
+	Realm    string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	RoleName string `json:"role_name"       jsonschema:"Role name"`
 }
 
 type getRealmRoleCompositesArgs struct {
-	Realm    string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	RoleName string `json:"role_name"       jsonschema:"description=Role name,required"`
+	Realm    string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	RoleName string `json:"role_name"       jsonschema:"Role name"`
 }
 
 type addRealmRoleCompositesArgs struct {
-	Realm    string   `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	RoleName string   `json:"role_name"       jsonschema:"description=Role name,required"`
-	Roles    []string `json:"roles"           jsonschema:"description=List of role names to add as composites,required"`
+	Realm    string   `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	RoleName string   `json:"role_name"       jsonschema:"Role name"`
+	Roles    []string `json:"roles"           jsonschema:"List of role names to add as composites"`
 }
 
 type removeRealmRoleCompositesArgs struct {
-	Realm    string   `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	RoleName string   `json:"role_name"       jsonschema:"description=Role name,required"`
-	Roles    []string `json:"roles"           jsonschema:"description=List of role names to remove from composites,required"`
+	Realm    string   `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	RoleName string   `json:"role_name"       jsonschema:"Role name"`
+	Roles    []string `json:"roles"           jsonschema:"List of role names to remove from composites"`
 }
 
 type listClientRolesArgs struct {
-	Realm    string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	ClientID string `json:"client_id"       jsonschema:"description=Internal client UUID,required"`
+	Realm    string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	ClientID string `json:"client_id"       jsonschema:"Internal client UUID"`
 }
 
 type getClientRoleArgs struct {
-	Realm    string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	ClientID string `json:"client_id"       jsonschema:"description=Internal client UUID,required"`
-	RoleName string `json:"role_name"       jsonschema:"description=Role name,required"`
+	Realm    string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	ClientID string `json:"client_id"       jsonschema:"Internal client UUID"`
+	RoleName string `json:"role_name"       jsonschema:"Role name"`
 }
 
 type createClientRoleArgs struct {
-	Realm       string `json:"realm,omitempty"       jsonschema:"description=Realm name (uses default if omitted)"`
-	ClientID    string `json:"client_id"             jsonschema:"description=Internal client UUID,required"`
-	Name        string `json:"name"                  jsonschema:"description=Role name,required"`
-	Description string `json:"description,omitempty" jsonschema:"description=Role description"`
+	Realm       string `json:"realm,omitempty"       jsonschema:"Realm name (uses default if omitted)"`
+	ClientID    string `json:"client_id"             jsonschema:"Internal client UUID"`
+	Name        string `json:"name"                  jsonschema:"Role name"`
+	Description string `json:"description,omitempty" jsonschema:"Role description"`
 }
 
 type updateClientRoleArgs struct {
-	Realm       string  `json:"realm,omitempty"       jsonschema:"description=Realm name (uses default if omitted)"`
-	ClientID    string  `json:"client_id"             jsonschema:"description=Internal client UUID,required"`
-	RoleName    string  `json:"role_name"             jsonschema:"description=Current role name,required"`
-	Name        *string `json:"name,omitempty"        jsonschema:"description=New role name"`
-	Description *string `json:"description,omitempty" jsonschema:"description=New role description"`
+	Realm       string  `json:"realm,omitempty"       jsonschema:"Realm name (uses default if omitted)"`
+	ClientID    string  `json:"client_id"             jsonschema:"Internal client UUID"`
+	RoleName    string  `json:"role_name"             jsonschema:"Current role name"`
+	Name        *string `json:"name,omitempty"        jsonschema:"New role name"`
+	Description *string `json:"description,omitempty" jsonschema:"New role description"`
 }
 
 type deleteClientRoleArgs struct {
-	Realm    string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	ClientID string `json:"client_id"       jsonschema:"description=Internal client UUID,required"`
-	RoleName string `json:"role_name"       jsonschema:"description=Role name,required"`
+	Realm    string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	ClientID string `json:"client_id"       jsonschema:"Internal client UUID"`
+	RoleName string `json:"role_name"       jsonschema:"Role name"`
 }
 
 type getUsersByRealmRoleArgs struct {
-	Realm    string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	RoleName string `json:"role_name"       jsonschema:"description=Role name,required"`
+	Realm    string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	RoleName string `json:"role_name"       jsonschema:"Role name"`
 }
 
 type getUsersByClientRoleArgs struct {
-	Realm    string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	ClientID string `json:"client_id"       jsonschema:"description=Internal client UUID,required"`
-	RoleName string `json:"role_name"       jsonschema:"description=Role name,required"`
+	Realm    string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	ClientID string `json:"client_id"       jsonschema:"Internal client UUID"`
+	RoleName string `json:"role_name"       jsonschema:"Role name"`
 }
 
 type getGroupsByRealmRoleArgs struct {
-	Realm    string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	RoleName string `json:"role_name"       jsonschema:"description=Role name,required"`
+	Realm    string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	RoleName string `json:"role_name"       jsonschema:"Role name"`
 }
 
 // ---------------------------------------------------------------------------

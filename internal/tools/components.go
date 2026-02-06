@@ -15,35 +15,35 @@ import (
 // ---------------------------------------------------------------------------
 
 type listComponentsArgs struct {
-	Realm string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	Name  string `json:"name,omitempty"  jsonschema:"description=Filter by component name"`
-	Type  string `json:"type,omitempty"  jsonschema:"description=Filter by provider type"`
+	Realm string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	Name  string `json:"name,omitempty"  jsonschema:"Filter by component name"`
+	Type  string `json:"type,omitempty"  jsonschema:"Filter by provider type"`
 }
 
 type getComponentArgs struct {
-	Realm       string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	ComponentID string `json:"component_id"    jsonschema:"description=Component ID,required"`
+	Realm       string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	ComponentID string `json:"component_id"    jsonschema:"Component ID"`
 }
 
 type createComponentArgs struct {
-	Realm        string              `json:"realm,omitempty"      jsonschema:"description=Realm name (uses default if omitted)"`
-	Name         string              `json:"name"                 jsonschema:"description=Component name,required"`
-	ProviderType string              `json:"provider_type"        jsonschema:"description=Provider type,required"`
-	ProviderID   string              `json:"provider_id"          jsonschema:"description=Provider ID,required"`
-	ParentID     string              `json:"parent_id,omitempty"  jsonschema:"description=Parent component ID"`
-	Config       map[string][]string `json:"config,omitempty"     jsonschema:"description=Component configuration"`
+	Realm        string              `json:"realm,omitempty"      jsonschema:"Realm name (uses default if omitted)"`
+	Name         string              `json:"name"                 jsonschema:"Component name"`
+	ProviderType string              `json:"provider_type"        jsonschema:"Provider type"`
+	ProviderID   string              `json:"provider_id"          jsonschema:"Provider ID"`
+	ParentID     string              `json:"parent_id,omitempty"  jsonschema:"Parent component ID"`
+	Config       map[string][]string `json:"config,omitempty"     jsonschema:"Component configuration"`
 }
 
 type updateComponentArgs struct {
-	Realm       string              `json:"realm,omitempty"      jsonschema:"description=Realm name (uses default if omitted)"`
-	ComponentID string              `json:"component_id"         jsonschema:"description=Component ID,required"`
-	Name        *string             `json:"name,omitempty"       jsonschema:"description=New component name"`
-	Config      map[string][]string `json:"config,omitempty"     jsonschema:"description=Updated component configuration"`
+	Realm       string              `json:"realm,omitempty"      jsonschema:"Realm name (uses default if omitted)"`
+	ComponentID string              `json:"component_id"         jsonschema:"Component ID"`
+	Name        *string             `json:"name,omitempty"       jsonschema:"New component name"`
+	Config      map[string][]string `json:"config,omitempty"     jsonschema:"Updated component configuration"`
 }
 
 type deleteComponentArgs struct {
-	Realm       string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	ComponentID string `json:"component_id"    jsonschema:"description=Component ID,required"`
+	Realm       string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	ComponentID string `json:"component_id"    jsonschema:"Component ID"`
 }
 
 // ---------------------------------------------------------------------------

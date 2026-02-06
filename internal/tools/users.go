@@ -14,157 +14,157 @@ import (
 // ---------------------------------------------------------------------------
 
 type listUsersArgs struct {
-	Realm  string `json:"realm,omitempty"  jsonschema:"description=Realm name (uses default if omitted)"`
-	First  *int   `json:"first,omitempty"  jsonschema:"description=Pagination offset"`
-	Max    *int   `json:"max,omitempty"    jsonschema:"description=Maximum number of results"`
-	Search string `json:"search,omitempty" jsonschema:"description=Search string for users"`
+	Realm  string `json:"realm,omitempty"  jsonschema:"Realm name (uses default if omitted)"`
+	First  *int   `json:"first,omitempty"  jsonschema:"Pagination offset"`
+	Max    *int   `json:"max,omitempty"    jsonschema:"Maximum number of results"`
+	Search string `json:"search,omitempty" jsonschema:"Search string for users"`
 }
 
 type getUserArgs struct {
-	Realm  string `json:"realm,omitempty"   jsonschema:"description=Realm name (uses default if omitted)"`
-	UserID string `json:"user_id"           jsonschema:"description=User ID,required"`
+	Realm  string `json:"realm,omitempty"   jsonschema:"Realm name (uses default if omitted)"`
+	UserID string `json:"user_id"           jsonschema:"User ID"`
 }
 
 type searchUsersArgs struct {
-	Realm     string `json:"realm,omitempty"      jsonschema:"description=Realm name (uses default if omitted)"`
-	Username  string `json:"username,omitempty"   jsonschema:"description=Username to search for"`
-	Email     string `json:"email,omitempty"      jsonschema:"description=Email to search for"`
-	FirstName string `json:"first_name,omitempty" jsonschema:"description=First name to search for"`
-	LastName  string `json:"last_name,omitempty"  jsonschema:"description=Last name to search for"`
-	Enabled   *bool  `json:"enabled,omitempty"    jsonschema:"description=Filter by enabled status"`
-	First     *int   `json:"first,omitempty"      jsonschema:"description=Pagination offset"`
-	Max       *int   `json:"max,omitempty"        jsonschema:"description=Maximum number of results"`
+	Realm     string `json:"realm,omitempty"      jsonschema:"Realm name (uses default if omitted)"`
+	Username  string `json:"username,omitempty"   jsonschema:"Username to search for"`
+	Email     string `json:"email,omitempty"      jsonschema:"Email to search for"`
+	FirstName string `json:"first_name,omitempty" jsonschema:"First name to search for"`
+	LastName  string `json:"last_name,omitempty"  jsonschema:"Last name to search for"`
+	Enabled   *bool  `json:"enabled,omitempty"    jsonschema:"Filter by enabled status"`
+	First     *int   `json:"first,omitempty"      jsonschema:"Pagination offset"`
+	Max       *int   `json:"max,omitempty"        jsonschema:"Maximum number of results"`
 }
 
 type createUserArgs struct {
-	Realm             string `json:"realm,omitempty"              jsonschema:"description=Realm name (uses default if omitted)"`
-	Username          string `json:"username"                     jsonschema:"description=Username for the new user,required"`
-	Email             string `json:"email,omitempty"              jsonschema:"description=Email address"`
-	FirstName         string `json:"first_name,omitempty"        jsonschema:"description=First name"`
-	LastName          string `json:"last_name,omitempty"         jsonschema:"description=Last name"`
-	Enabled           *bool  `json:"enabled,omitempty"            jsonschema:"description=Whether the user is enabled (default true)"`
-	Password          string `json:"password,omitempty"           jsonschema:"description=Initial password"`
-	TemporaryPassword *bool  `json:"temporary_password,omitempty" jsonschema:"description=Whether the password is temporary"`
+	Realm             string `json:"realm,omitempty"              jsonschema:"Realm name (uses default if omitted)"`
+	Username          string `json:"username"                     jsonschema:"Username for the new user"`
+	Email             string `json:"email,omitempty"              jsonschema:"Email address"`
+	FirstName         string `json:"first_name,omitempty"        jsonschema:"First name"`
+	LastName          string `json:"last_name,omitempty"         jsonschema:"Last name"`
+	Enabled           *bool  `json:"enabled,omitempty"            jsonschema:"Whether the user is enabled (default true)"`
+	Password          string `json:"password,omitempty"           jsonschema:"Initial password"`
+	TemporaryPassword *bool  `json:"temporary_password,omitempty" jsonschema:"Whether the password is temporary"`
 }
 
 type updateUserArgs struct {
-	Realm     string  `json:"realm,omitempty"      jsonschema:"description=Realm name (uses default if omitted)"`
-	UserID    string  `json:"user_id"              jsonschema:"description=User ID,required"`
-	Email     *string `json:"email,omitempty"      jsonschema:"description=New email address"`
-	FirstName *string `json:"first_name,omitempty" jsonschema:"description=New first name"`
-	LastName  *string `json:"last_name,omitempty"  jsonschema:"description=New last name"`
-	Enabled   *bool   `json:"enabled,omitempty"    jsonschema:"description=Whether the user is enabled"`
+	Realm     string  `json:"realm,omitempty"      jsonschema:"Realm name (uses default if omitted)"`
+	UserID    string  `json:"user_id"              jsonschema:"User ID"`
+	Email     *string `json:"email,omitempty"      jsonschema:"New email address"`
+	FirstName *string `json:"first_name,omitempty" jsonschema:"New first name"`
+	LastName  *string `json:"last_name,omitempty"  jsonschema:"New last name"`
+	Enabled   *bool   `json:"enabled,omitempty"    jsonschema:"Whether the user is enabled"`
 }
 
 type deleteUserArgs struct {
-	Realm  string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	UserID string `json:"user_id"         jsonschema:"description=User ID,required"`
+	Realm  string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	UserID string `json:"user_id"         jsonschema:"User ID"`
 }
 
 type countUsersArgs struct {
-	Realm  string `json:"realm,omitempty"  jsonschema:"description=Realm name (uses default if omitted)"`
-	Search string `json:"search,omitempty" jsonschema:"description=Search string to filter count"`
+	Realm  string `json:"realm,omitempty"  jsonschema:"Realm name (uses default if omitted)"`
+	Search string `json:"search,omitempty" jsonschema:"Search string to filter count"`
 }
 
 type setUserPasswordArgs struct {
-	Realm     string `json:"realm,omitempty"     jsonschema:"description=Realm name (uses default if omitted)"`
-	UserID    string `json:"user_id"             jsonschema:"description=User ID,required"`
-	Password  string `json:"password"            jsonschema:"description=New password,required"`
-	Temporary *bool  `json:"temporary,omitempty" jsonschema:"description=Whether the password is temporary"`
+	Realm     string `json:"realm,omitempty"     jsonschema:"Realm name (uses default if omitted)"`
+	UserID    string `json:"user_id"             jsonschema:"User ID"`
+	Password  string `json:"password"            jsonschema:"New password"`
+	Temporary *bool  `json:"temporary,omitempty" jsonschema:"Whether the password is temporary"`
 }
 
 type getUserCredentialsArgs struct {
-	Realm  string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	UserID string `json:"user_id"         jsonschema:"description=User ID,required"`
+	Realm  string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	UserID string `json:"user_id"         jsonschema:"User ID"`
 }
 
 type deleteUserCredentialArgs struct {
-	Realm        string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	UserID       string `json:"user_id"         jsonschema:"description=User ID,required"`
-	CredentialID string `json:"credential_id"   jsonschema:"description=Credential ID to delete,required"`
+	Realm        string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	UserID       string `json:"user_id"         jsonschema:"User ID"`
+	CredentialID string `json:"credential_id"   jsonschema:"Credential ID to delete"`
 }
 
 type sendVerifyEmailArgs struct {
-	Realm  string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	UserID string `json:"user_id"         jsonschema:"description=User ID,required"`
+	Realm  string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	UserID string `json:"user_id"         jsonschema:"User ID"`
 }
 
 type executeActionsEmailArgs struct {
-	Realm    string   `json:"realm,omitempty"    jsonschema:"description=Realm name (uses default if omitted)"`
-	UserID   string   `json:"user_id"            jsonschema:"description=User ID,required"`
-	Actions  []string `json:"actions"            jsonschema:"description=List of actions to execute,required"`
-	Lifespan *int     `json:"lifespan,omitempty" jsonschema:"description=Lifespan of the action token in seconds"`
+	Realm    string   `json:"realm,omitempty"    jsonschema:"Realm name (uses default if omitted)"`
+	UserID   string   `json:"user_id"            jsonschema:"User ID"`
+	Actions  []string `json:"actions"            jsonschema:"List of actions to execute"`
+	Lifespan *int     `json:"lifespan,omitempty" jsonschema:"Lifespan of the action token in seconds"`
 }
 
 type getUserGroupsArgs struct {
-	Realm  string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	UserID string `json:"user_id"         jsonschema:"description=User ID,required"`
+	Realm  string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	UserID string `json:"user_id"         jsonschema:"User ID"`
 }
 
 type addUserToGroupArgs struct {
-	Realm   string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	UserID  string `json:"user_id"         jsonschema:"description=User ID,required"`
-	GroupID string `json:"group_id"        jsonschema:"description=Group ID,required"`
+	Realm   string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	UserID  string `json:"user_id"         jsonschema:"User ID"`
+	GroupID string `json:"group_id"        jsonschema:"Group ID"`
 }
 
 type removeUserFromGroupArgs struct {
-	Realm   string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	UserID  string `json:"user_id"         jsonschema:"description=User ID,required"`
-	GroupID string `json:"group_id"        jsonschema:"description=Group ID,required"`
+	Realm   string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	UserID  string `json:"user_id"         jsonschema:"User ID"`
+	GroupID string `json:"group_id"        jsonschema:"Group ID"`
 }
 
 type getUserSessionsArgs struct {
-	Realm  string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	UserID string `json:"user_id"         jsonschema:"description=User ID,required"`
+	Realm  string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	UserID string `json:"user_id"         jsonschema:"User ID"`
 }
 
 type getUserFederatedIdentitiesArgs struct {
-	Realm  string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	UserID string `json:"user_id"         jsonschema:"description=User ID,required"`
+	Realm  string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	UserID string `json:"user_id"         jsonschema:"User ID"`
 }
 
 type createUserFederatedIdentityArgs struct {
-	Realm             string `json:"realm,omitempty"      jsonschema:"description=Realm name (uses default if omitted)"`
-	UserID            string `json:"user_id"              jsonschema:"description=User ID,required"`
-	ProviderID        string `json:"provider_id"          jsonschema:"description=Identity provider alias,required"`
-	FederatedUserID   string `json:"federated_user_id"    jsonschema:"description=User ID at the identity provider,required"`
-	FederatedUsername string `json:"federated_username"   jsonschema:"description=Username at the identity provider,required"`
+	Realm             string `json:"realm,omitempty"      jsonschema:"Realm name (uses default if omitted)"`
+	UserID            string `json:"user_id"              jsonschema:"User ID"`
+	ProviderID        string `json:"provider_id"          jsonschema:"Identity provider alias"`
+	FederatedUserID   string `json:"federated_user_id"    jsonschema:"User ID at the identity provider"`
+	FederatedUsername string `json:"federated_username"   jsonschema:"Username at the identity provider"`
 }
 
 type deleteUserFederatedIdentityArgs struct {
-	Realm      string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	UserID     string `json:"user_id"         jsonschema:"description=User ID,required"`
-	ProviderID string `json:"provider_id"     jsonschema:"description=Identity provider alias,required"`
+	Realm      string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	UserID     string `json:"user_id"         jsonschema:"User ID"`
+	ProviderID string `json:"provider_id"     jsonschema:"Identity provider alias"`
 }
 
 type getUserRealmRolesArgs struct {
-	Realm  string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	UserID string `json:"user_id"         jsonschema:"description=User ID,required"`
+	Realm  string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	UserID string `json:"user_id"         jsonschema:"User ID"`
 }
 
 type addUserRealmRolesArgs struct {
-	Realm  string   `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	UserID string   `json:"user_id"         jsonschema:"description=User ID,required"`
-	Roles  []string `json:"roles"           jsonschema:"description=List of realm role names to add,required"`
+	Realm  string   `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	UserID string   `json:"user_id"         jsonschema:"User ID"`
+	Roles  []string `json:"roles"           jsonschema:"List of realm role names to add"`
 }
 
 type removeUserRealmRolesArgs struct {
-	Realm  string   `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	UserID string   `json:"user_id"         jsonschema:"description=User ID,required"`
-	Roles  []string `json:"roles"           jsonschema:"description=List of realm role names to remove,required"`
+	Realm  string   `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	UserID string   `json:"user_id"         jsonschema:"User ID"`
+	Roles  []string `json:"roles"           jsonschema:"List of realm role names to remove"`
 }
 
 type getUserClientRolesArgs struct {
-	Realm    string `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	UserID   string `json:"user_id"         jsonschema:"description=User ID,required"`
-	ClientID string `json:"client_id"       jsonschema:"description=Internal client UUID,required"`
+	Realm    string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	UserID   string `json:"user_id"         jsonschema:"User ID"`
+	ClientID string `json:"client_id"       jsonschema:"Internal client UUID"`
 }
 
 type addUserClientRolesArgs struct {
-	Realm    string   `json:"realm,omitempty" jsonschema:"description=Realm name (uses default if omitted)"`
-	UserID   string   `json:"user_id"         jsonschema:"description=User ID,required"`
-	ClientID string   `json:"client_id"       jsonschema:"description=Internal client UUID,required"`
-	Roles    []string `json:"roles"           jsonschema:"description=List of client role names to add,required"`
+	Realm    string   `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	UserID   string   `json:"user_id"         jsonschema:"User ID"`
+	ClientID string   `json:"client_id"       jsonschema:"Internal client UUID"`
+	Roles    []string `json:"roles"           jsonschema:"List of client role names to add"`
 }
 
 // ---------------------------------------------------------------------------
