@@ -24,24 +24,30 @@ type getClientArgs struct {
 }
 
 type createClientArgs struct {
-	Realm        string   `json:"realm,omitempty"          jsonschema:"Keycloak realm (uses default if omitted)"`
-	ClientID     string   `json:"client_id"                jsonschema:"The clientId for the new client"`
-	Name         string   `json:"name,omitempty"           jsonschema:"Display name"`
-	Protocol     string   `json:"protocol,omitempty"       jsonschema:"Protocol (default openid-connect)"`
-	PublicClient bool     `json:"public_client,omitempty"  jsonschema:"Whether the client is public (no secret)"`
-	RootURL      string   `json:"root_url,omitempty"       jsonschema:"Root URL of the client"`
-	RedirectURIs []string `json:"redirect_uris,omitempty"  jsonschema:"Valid redirect URIs"`
-	WebOrigins   []string `json:"web_origins,omitempty"    jsonschema:"Allowed web origins"`
+	Realm        string            `json:"realm,omitempty"          jsonschema:"Keycloak realm (uses default if omitted)"`
+	ClientID     string            `json:"client_id"                jsonschema:"The clientId for the new client"`
+	Name         string            `json:"name,omitempty"           jsonschema:"Display name"`
+	Protocol     string            `json:"protocol,omitempty"       jsonschema:"Protocol (default openid-connect). Use 'saml' for SAML clients."`
+	PublicClient bool              `json:"public_client,omitempty"  jsonschema:"Whether the client is public (no secret)"`
+	RootURL      string            `json:"root_url,omitempty"       jsonschema:"Root URL of the client"`
+	RedirectURIs []string          `json:"redirect_uris,omitempty"  jsonschema:"Valid redirect URIs. For SAML, set the Assertion Consumer Service URL."`
+	WebOrigins   []string          `json:"web_origins,omitempty"    jsonschema:"Allowed web origins"`
+	Attributes   map[string]string `json:"attributes,omitempty"     jsonschema:"Client attributes as key-value pairs. For SAML: saml_name_id_format, saml.client.signature, saml.server.signature, saml.force.post.binding, saml_assertion_consumer_url_post, saml_single_logout_service_url_post, saml_force_name_id_format, saml.authnstatement, saml.signature.algorithm"`
+	// SAML convenience fields (set corresponding attributes automatically)
+	SAMLAcsURL    string `json:"saml_acs_url,omitempty"     jsonschema:"SAML Assertion Consumer Service POST URL (sets saml_assertion_consumer_url_post attribute)"`
+	SAMLSloURL    string `json:"saml_slo_url,omitempty"     jsonschema:"SAML Single Logout Service POST URL (sets saml_single_logout_service_url_post attribute)"`
+	SAMLNameIDFmt string `json:"saml_name_id_format,omitempty" jsonschema:"SAML NameID format: username, email, persistent, transient (default: email)"`
 }
 
 type updateClientArgs struct {
-	Realm        string    `json:"realm,omitempty"          jsonschema:"Keycloak realm (uses default if omitted)"`
-	ID           string    `json:"id"                       jsonschema:"Internal UUID of the client"`
-	Name         *string   `json:"name,omitempty"           jsonschema:"Display name"`
-	RootURL      *string   `json:"root_url,omitempty"       jsonschema:"Root URL"`
-	RedirectURIs *[]string `json:"redirect_uris,omitempty"  jsonschema:"Valid redirect URIs"`
-	WebOrigins   *[]string `json:"web_origins,omitempty"    jsonschema:"Allowed web origins"`
-	Enabled      *bool     `json:"enabled,omitempty"        jsonschema:"Whether the client is enabled"`
+	Realm        string            `json:"realm,omitempty"          jsonschema:"Keycloak realm (uses default if omitted)"`
+	ID           string            `json:"id"                       jsonschema:"Internal UUID of the client"`
+	Name         *string           `json:"name,omitempty"           jsonschema:"Display name"`
+	RootURL      *string           `json:"root_url,omitempty"       jsonschema:"Root URL"`
+	RedirectURIs *[]string         `json:"redirect_uris,omitempty"  jsonschema:"Valid redirect URIs"`
+	WebOrigins   *[]string         `json:"web_origins,omitempty"    jsonschema:"Allowed web origins"`
+	Enabled      *bool             `json:"enabled,omitempty"        jsonschema:"Whether the client is enabled"`
+	Attributes   map[string]string `json:"attributes,omitempty"     jsonschema:"Client attributes to set or update (merged with existing). For SAML: saml_name_id_format, saml.client.signature, saml.server.signature, saml.force.post.binding, etc."`
 }
 
 type deleteClientArgs struct {
@@ -225,8 +231,8 @@ func registerCreateClient(s *mcp.Server, kc *keycloak.Client) {
 		}
 
 		newClient := gocloak.Client{
-			ClientID: gocloak.StringP(args.ClientID),
-			Protocol: gocloak.StringP(protocol),
+			ClientID:     gocloak.StringP(args.ClientID),
+			Protocol:     gocloak.StringP(protocol),
 			PublicClient: gocloak.BoolP(args.PublicClient),
 		}
 		if args.Name != "" {
@@ -240,6 +246,48 @@ func registerCreateClient(s *mcp.Server, kc *keycloak.Client) {
 		}
 		if len(args.WebOrigins) > 0 {
 			newClient.WebOrigins = &args.WebOrigins
+		}
+
+		// Build attributes map from explicit attributes + SAML convenience fields
+		attrs := make(map[string]string)
+		for k, v := range args.Attributes {
+			attrs[k] = v
+		}
+		// SAML convenience fields → attributes
+		if args.SAMLAcsURL != "" {
+			attrs["saml_assertion_consumer_url_post"] = args.SAMLAcsURL
+		}
+		if args.SAMLSloURL != "" {
+			attrs["saml_single_logout_service_url_post"] = args.SAMLSloURL
+		}
+		if args.SAMLNameIDFmt != "" {
+			attrs["saml_name_id_format"] = args.SAMLNameIDFmt
+			attrs["saml_force_name_id_format"] = "true"
+		}
+		// For SAML clients, set sensible defaults if not explicitly provided
+		if protocol == "saml" {
+			if _, ok := attrs["saml.authnstatement"]; !ok {
+				attrs["saml.authnstatement"] = "true"
+			}
+			if _, ok := attrs["saml.server.signature"]; !ok {
+				attrs["saml.server.signature"] = "true"
+			}
+			if _, ok := attrs["saml.force.post.binding"]; !ok {
+				attrs["saml.force.post.binding"] = "true"
+			}
+			if _, ok := attrs["saml.client.signature"]; !ok {
+				attrs["saml.client.signature"] = "false"
+			}
+			if _, ok := attrs["saml.signature.algorithm"]; !ok {
+				attrs["saml.signature.algorithm"] = "RSA_SHA256"
+			}
+			if _, ok := attrs["saml_name_id_format"]; !ok {
+				attrs["saml_name_id_format"] = "email"
+				attrs["saml_force_name_id_format"] = "true"
+			}
+		}
+		if len(attrs) > 0 {
+			newClient.Attributes = &attrs
 		}
 
 		id, err := kc.GC.CreateClient(ctx, token, realm, newClient)
@@ -284,6 +332,17 @@ func registerUpdateClient(s *mcp.Server, kc *keycloak.Client) {
 		}
 		if args.Enabled != nil {
 			client.Enabled = args.Enabled
+		}
+		// Merge attributes (add/overwrite keys, preserve existing ones not in args)
+		if len(args.Attributes) > 0 {
+			existing := make(map[string]string)
+			if client.Attributes != nil {
+				existing = *client.Attributes
+			}
+			for k, v := range args.Attributes {
+				existing[k] = v
+			}
+			client.Attributes = &existing
 		}
 
 		err = kc.GC.UpdateClient(ctx, token, realm, *client)
