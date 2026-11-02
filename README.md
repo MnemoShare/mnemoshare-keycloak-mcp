@@ -4,13 +4,13 @@
 [![Go](https://img.shields.io/badge/Go-1.23+-00ADD8?logo=go&logoColor=white)](https://go.dev)
 [![MCP](https://img.shields.io/badge/MCP-Compatible-purple)](https://modelcontextprotocol.io)
 
-A comprehensive [Model Context Protocol](https://modelcontextprotocol.io) (MCP) server for Keycloak administration. Provides **134 tools across 13 domains** — manage realms, users, groups, clients, roles, identity providers, authentication flows, and more, all from your AI assistant.
+A comprehensive [Model Context Protocol](https://modelcontextprotocol.io) (MCP) server for Keycloak administration. Provides **139 tools across 13 domains** — manage realms, users, groups, clients, roles, identity providers, authentication flows, and more, all from your AI assistant.
 
 Built and maintained by [MnemoShare](https://mnemoshare.com) — a HIPAA-compliant secure file transfer platform.
 
 ## Features
 
-- **134 admin tools** covering the full Keycloak Admin REST API
+- **139 admin tools** covering the full Keycloak Admin REST API
 - **Two transport modes** — stdio (for Claude Code, Cursor, etc.) and HTTP (for remote/container deployments)
 - **Two auth modes** — admin password or client credentials (service account)
 - **Automatic token refresh** — handles Keycloak token lifecycle transparently
@@ -172,15 +172,15 @@ This is more secure for ongoing use — the service account has a rotatable secr
 
 ## Tools
 
-134 tools across 13 domains:
+139 tools across 13 domains:
 
 | Domain | Tools | Description |
 |---|---|---|
 | **Realms** | 8 | List, get, create, update, delete, clear caches |
-| **Users** | 24 | CRUD, passwords, credentials, groups, sessions, federated identities, roles |
-| **Groups** | 12 | CRUD, members, count, realm/client role mappings |
+| **Users** | 25 | CRUD, passwords, credentials, groups, sessions, federated identities, roles |
+| **Groups** | 15 | CRUD, child groups, members, count, realm/client role mappings |
 | **Clients** | 18 | CRUD, secrets, service accounts, scopes, protocol mappers, sessions |
-| **Roles** | 16 | Realm + client role CRUD, composites, user/group lookups |
+| **Roles** | 17 | Realm + client role CRUD, composites, user/group lookups |
 | **Identity Providers** | 8 | CRUD + mappers |
 | **Authentication Flows** | 10 | Flows, executions, required actions |
 | **Client Scopes** | 10 | CRUD + protocol mappers + realm defaults |

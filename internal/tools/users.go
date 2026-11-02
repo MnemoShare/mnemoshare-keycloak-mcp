@@ -167,6 +167,13 @@ type addUserClientRolesArgs struct {
 	Roles    []string `json:"roles"           jsonschema:"List of client role names to add"`
 }
 
+type removeUserClientRolesArgs struct {
+	Realm    string   `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	UserID   string   `json:"user_id"         jsonschema:"User ID"`
+	ClientID string   `json:"client_id"       jsonschema:"Internal client UUID"`
+	Roles    []string `json:"roles"           jsonschema:"List of client role names to remove"`
+}
+
 // ---------------------------------------------------------------------------
 // Registration
 // ---------------------------------------------------------------------------
@@ -759,10 +766,41 @@ func registerUserTools(s *mcp.Server, kc *keycloak.Client) {
 				roles = append(roles, *role)
 			}
 
-			if err := kc.GC.AddClientRoleToUser(ctx, token, realm, args.ClientID, args.UserID, roles); err != nil {
+			if err := kc.GC.AddClientRolesToUser(ctx, token, realm, args.ClientID, args.UserID, roles); err != nil {
 				return toolError(fmt.Sprintf("failed to add client roles to user: %v", err))
 			}
 			return toolSuccess("Client roles added to user")
+		},
+	)
+
+	// 25. remove_user_client_roles
+	mcp.AddTool(s, &mcp.Tool{
+		Name:        "remove_user_client_roles",
+		Description: "Remove client-level roles from a user",
+	},
+		func(ctx context.Context, req *mcp.CallToolRequest, args removeUserClientRolesArgs) (*mcp.CallToolResult, any, error) {
+			if len(args.Roles) == 0 {
+				return toolError("roles must contain at least one role name")
+			}
+			token, err := kc.Token(ctx)
+			if err != nil {
+				return toolError(fmt.Sprintf("token error: %v", err))
+			}
+			realm := kc.ResolveRealm(args.Realm)
+
+			var roles []gocloak.Role
+			for _, roleName := range args.Roles {
+				role, err := kc.GC.GetClientRole(ctx, token, realm, args.ClientID, roleName)
+				if err != nil {
+					return toolError(fmt.Sprintf("failed to get client role %q: %v", roleName, err))
+				}
+				roles = append(roles, *role)
+			}
+
+			if err := kc.GC.DeleteClientRolesFromUser(ctx, token, realm, args.ClientID, args.UserID, roles); err != nil {
+				return toolError(fmt.Sprintf("failed to remove client roles from user: %v", err))
+			}
+			return toolSuccess("Client roles removed from user")
 		},
 	)
 }

@@ -250,7 +250,7 @@ func registerClientScopeTools(s *mcp.Server, kc *keycloak.Client) {
 		if len(args.Config) > 0 {
 			configJSON, _ := json.Marshal(args.Config)
 			var pmConfig gocloak.ProtocolMappersConfig
-			json.Unmarshal(configJSON, &pmConfig)
+			_ = json.Unmarshal(configJSON, &pmConfig)
 			mapper.ProtocolMappersConfig = &pmConfig
 		}
 
@@ -297,7 +297,7 @@ func registerClientScopeTools(s *mcp.Server, kc *keycloak.Client) {
 		if args.Config != nil {
 			configJSON, _ := json.Marshal(args.Config)
 			var pmConfig gocloak.ProtocolMappersConfig
-			json.Unmarshal(configJSON, &pmConfig)
+			_ = json.Unmarshal(configJSON, &pmConfig)
 			existing.ProtocolMappersConfig = &pmConfig
 		}
 

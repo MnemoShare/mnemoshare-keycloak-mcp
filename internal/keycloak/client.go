@@ -2,6 +2,8 @@ package keycloak
 
 import (
 	"context"
+	"net/url"
+	"strings"
 
 	"github.com/Nerzal/gocloak/v13"
 
@@ -14,6 +16,7 @@ type Client struct {
 	GC           *gocloak.GoCloak
 	tokenManager *auth.TokenManager
 	defaultRealm string
+	baseURL      string
 }
 
 func NewClient(cfg *config.Config, tm *auth.TokenManager) *Client {
@@ -21,6 +24,7 @@ func NewClient(cfg *config.Config, tm *auth.TokenManager) *Client {
 		GC:           tm.GoCloak(),
 		tokenManager: tm,
 		defaultRealm: cfg.DefaultRealm,
+		baseURL:      strings.TrimRight(cfg.KeycloakURL, "/"),
 	}
 }
 
@@ -38,4 +42,14 @@ func (c *Client) ResolveRealm(realm string) string {
 		return c.defaultRealm
 	}
 	return "master"
+}
+
+// AdminRealmURL builds {base}/admin/realms/{realm}/{segments...}; every
+// variable segment must be passed separately so it is path-escaped.
+func (c *Client) AdminRealmURL(realm string, segments ...string) string {
+	u := c.baseURL + "/admin/realms/" + url.PathEscape(realm)
+	for _, seg := range segments {
+		u += "/" + url.PathEscape(seg)
+	}
+	return u
 }
