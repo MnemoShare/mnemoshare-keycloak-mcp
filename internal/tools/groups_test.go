@@ -171,16 +171,31 @@ func TestAddGroupClientRoles(t *testing.T) {
 	}
 }
 
-func TestGroupClientRolesRejectEmpty(t *testing.T) {
+func TestRoleMappingToolsRejectEmptyArgs(t *testing.T) {
 	cs, reqs := newTestSession(t, func(w http.ResponseWriter, r *http.Request) {})
-	for _, name := range []string{"add_group_client_roles", "remove_group_client_roles"} {
-		res := callTool(t, cs, name, map[string]any{"group_id": "g1", "client_id": "c1", "roles": []string{}})
-		if !res.IsError {
-			t.Fatalf("%s: expected error for empty roles", name)
+	cases := []struct {
+		tool string
+		args map[string]any
+	}{
+		{"add_group_client_roles", map[string]any{"group_id": "g1", "client_id": "c1", "roles": []string{}}},
+		{"add_group_client_roles", map[string]any{"group_id": "", "client_id": "c1", "roles": []string{"viewer"}}},
+		{"remove_group_client_roles", map[string]any{"group_id": "g1", "client_id": "c1", "roles": []string{}}},
+		{"remove_group_client_roles", map[string]any{"group_id": "g1", "client_id": "", "roles": []string{"viewer"}}},
+		{"add_user_client_roles", map[string]any{"user_id": "u1", "client_id": "c1", "roles": []string{}}},
+		{"add_user_client_roles", map[string]any{"user_id": "", "client_id": "c1", "roles": []string{"viewer"}}},
+		{"remove_user_client_roles", map[string]any{"user_id": "u1", "client_id": "c1", "roles": []string{}}},
+		{"remove_user_client_roles", map[string]any{"user_id": "u1", "client_id": "", "roles": []string{"viewer"}}},
+		{"get_groups_by_client_role", map[string]any{"client_id": "c1", "role_name": ""}},
+		{"get_groups_by_client_role", map[string]any{"client_id": "", "role_name": "viewer"}},
+		{"list_group_children", map[string]any{"group_id": ""}},
+	}
+	for _, tc := range cases {
+		if res := callTool(t, cs, tc.tool, tc.args); !res.IsError {
+			t.Fatalf("%s %v: expected error", tc.tool, tc.args)
 		}
 	}
-	if len(reqs.all()) != 0 {
-		t.Fatalf("expected no Keycloak calls, got %d", len(reqs.all()))
+	if n := len(reqs.all()); n != 0 {
+		t.Fatalf("expected no Keycloak calls, got %d", n)
 	}
 }
 
@@ -210,7 +225,10 @@ func TestRemoveClientRoleMappings(t *testing.T) {
 				t.Fatalf("unexpected error: %s", resultText(res))
 			}
 			all := reqs.all()
-			last := all[len(all)-1]
+			if len(all) != 2 {
+				t.Fatalf("expected 2 requests, got %d", len(all))
+			}
+			last := all[1]
 			if last.method != "DELETE" || last.path != tc.path {
 				t.Fatalf("unexpected request %s %s", last.method, last.path)
 			}

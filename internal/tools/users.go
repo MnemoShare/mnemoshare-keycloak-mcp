@@ -751,6 +751,12 @@ func registerUserTools(s *mcp.Server, kc *keycloak.Client) {
 		Description: "Add client-level roles to a user",
 	},
 		func(ctx context.Context, req *mcp.CallToolRequest, args addUserClientRolesArgs) (*mcp.CallToolResult, any, error) {
+			if args.UserID == "" || args.ClientID == "" {
+				return toolError("user_id and client_id are required")
+			}
+			if len(args.Roles) == 0 {
+				return toolError("roles must contain at least one role name")
+			}
 			token, err := kc.Token(ctx)
 			if err != nil {
 				return toolError(fmt.Sprintf("token error: %v", err))
