@@ -757,13 +757,9 @@ func registerUserTools(s *mcp.Server, kc *keycloak.Client) {
 			}
 			realm := kc.ResolveRealm(args.Realm)
 
-			var roles []gocloak.Role
-			for _, roleName := range args.Roles {
-				role, err := kc.GC.GetClientRole(ctx, token, realm, args.ClientID, roleName)
-				if err != nil {
-					return toolError(fmt.Sprintf("failed to get client role %q: %v", roleName, err))
-				}
-				roles = append(roles, *role)
+			roles, err := resolveClientRoles(ctx, kc, token, realm, args.ClientID, args.Roles)
+			if err != nil {
+				return toolError(err.Error())
 			}
 
 			if err := kc.GC.AddClientRolesToUser(ctx, token, realm, args.ClientID, args.UserID, roles); err != nil {
@@ -779,6 +775,9 @@ func registerUserTools(s *mcp.Server, kc *keycloak.Client) {
 		Description: "Remove client-level roles from a user",
 	},
 		func(ctx context.Context, req *mcp.CallToolRequest, args removeUserClientRolesArgs) (*mcp.CallToolResult, any, error) {
+			if args.UserID == "" || args.ClientID == "" {
+				return toolError("user_id and client_id are required")
+			}
 			if len(args.Roles) == 0 {
 				return toolError("roles must contain at least one role name")
 			}
@@ -788,13 +787,9 @@ func registerUserTools(s *mcp.Server, kc *keycloak.Client) {
 			}
 			realm := kc.ResolveRealm(args.Realm)
 
-			var roles []gocloak.Role
-			for _, roleName := range args.Roles {
-				role, err := kc.GC.GetClientRole(ctx, token, realm, args.ClientID, roleName)
-				if err != nil {
-					return toolError(fmt.Sprintf("failed to get client role %q: %v", roleName, err))
-				}
-				roles = append(roles, *role)
+			roles, err := resolveClientRoles(ctx, kc, token, realm, args.ClientID, args.Roles)
+			if err != nil {
+				return toolError(err.Error())
 			}
 
 			if err := kc.GC.DeleteClientRolesFromUser(ctx, token, realm, args.ClientID, args.UserID, roles); err != nil {

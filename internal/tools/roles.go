@@ -447,6 +447,9 @@ func registerRoleTools(s *mcp.Server, kc *keycloak.Client) {
 		Name:        "get_groups_by_client_role",
 		Description: "Get all groups assigned a specific client role",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args getGroupsByClientRoleArgs) (*mcp.CallToolResult, any, error) {
+		if args.ClientID == "" || args.RoleName == "" {
+			return toolError("client_id and role_name are required")
+		}
 		token, err := kc.Token(ctx)
 		if err != nil {
 			return toolError(fmt.Sprintf("auth failed: %v", err))

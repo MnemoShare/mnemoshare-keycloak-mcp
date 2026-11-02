@@ -378,6 +378,9 @@ func registerGroupTools(s *mcp.Server, kc *keycloak.Client) {
 		Name:        "add_group_client_roles",
 		Description: "Add client roles to a Keycloak group",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args addGroupClientRolesArgs) (*mcp.CallToolResult, any, error) {
+		if args.GroupID == "" || args.ClientID == "" {
+			return toolError("group_id and client_id are required")
+		}
 		if len(args.Roles) == 0 {
 			return toolError("roles must contain at least one role name")
 		}
@@ -387,13 +390,9 @@ func registerGroupTools(s *mcp.Server, kc *keycloak.Client) {
 		}
 		realm := kc.ResolveRealm(args.Realm)
 
-		var rolesToAdd []gocloak.Role
-		for _, roleName := range args.Roles {
-			role, err := kc.GC.GetClientRole(ctx, token, realm, args.ClientID, roleName)
-			if err != nil {
-				return toolError(fmt.Sprintf("failed to get client role %q: %v", roleName, err))
-			}
-			rolesToAdd = append(rolesToAdd, *role)
+		rolesToAdd, err := resolveClientRoles(ctx, kc, token, realm, args.ClientID, args.Roles)
+		if err != nil {
+			return toolError(err.Error())
 		}
 
 		if err := kc.GC.AddClientRolesToGroup(ctx, token, realm, args.ClientID, args.GroupID, rolesToAdd); err != nil {
@@ -407,6 +406,9 @@ func registerGroupTools(s *mcp.Server, kc *keycloak.Client) {
 		Name:        "remove_group_client_roles",
 		Description: "Remove client roles from a Keycloak group",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args removeGroupClientRolesArgs) (*mcp.CallToolResult, any, error) {
+		if args.GroupID == "" || args.ClientID == "" {
+			return toolError("group_id and client_id are required")
+		}
 		if len(args.Roles) == 0 {
 			return toolError("roles must contain at least one role name")
 		}
@@ -416,13 +418,9 @@ func registerGroupTools(s *mcp.Server, kc *keycloak.Client) {
 		}
 		realm := kc.ResolveRealm(args.Realm)
 
-		var rolesToRemove []gocloak.Role
-		for _, roleName := range args.Roles {
-			role, err := kc.GC.GetClientRole(ctx, token, realm, args.ClientID, roleName)
-			if err != nil {
-				return toolError(fmt.Sprintf("failed to get client role %q: %v", roleName, err))
-			}
-			rolesToRemove = append(rolesToRemove, *role)
+		rolesToRemove, err := resolveClientRoles(ctx, kc, token, realm, args.ClientID, args.Roles)
+		if err != nil {
+			return toolError(err.Error())
 		}
 
 		if err := kc.GC.DeleteClientRoleFromGroup(ctx, token, realm, args.ClientID, args.GroupID, rolesToRemove); err != nil {
@@ -435,7 +433,7 @@ func registerGroupTools(s *mcp.Server, kc *keycloak.Client) {
 	// Keycloak 23+ no longer populates subGroups in list_groups, and gocloak has no wrapper for /children.
 	mcp.AddTool(s, &mcp.Tool{
 		Name:        "list_group_children",
-		Description: "List the child groups of a Keycloak group with optional search and pagination",
+		Description: "List the child groups of a Keycloak group with optional search and pagination (requires Keycloak 23+)",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args listGroupChildrenArgs) (*mcp.CallToolResult, any, error) {
 		if args.GroupID == "" {
 			return toolError("group_id is required")
