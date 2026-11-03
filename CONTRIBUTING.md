@@ -65,6 +65,8 @@ make run-http
 4. **Test your changes** against a running Keycloak instance
 5. **Push** your branch and open a Pull Request
 
+CI runs build, vet, golangci-lint and race tests on every pull request.
+
 ### Pull Request Guidelines
 
 - Keep PRs focused — one feature or fix per PR

@@ -193,8 +193,8 @@ func registerUserTools(s *mcp.Server, kc *keycloak.Client) {
 			realm := kc.ResolveRealm(args.Realm)
 
 			params := gocloak.GetUsersParams{
-				First:  args.First,
-				Max:    args.Max,
+				First: args.First,
+				Max:   args.Max,
 			}
 			if args.Search != "" {
 				params.Search = gocloak.StringP(args.Search)
@@ -284,8 +284,8 @@ func registerUserTools(s *mcp.Server, kc *keycloak.Client) {
 			}
 
 			user := gocloak.User{
-				Username:  gocloak.StringP(args.Username),
-				Enabled:   gocloak.BoolP(enabled),
+				Username: gocloak.StringP(args.Username),
+				Enabled:  gocloak.BoolP(enabled),
 			}
 			if args.Email != "" {
 				user.Email = gocloak.StringP(args.Email)
