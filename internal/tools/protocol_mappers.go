@@ -25,6 +25,9 @@ func createMapperRaw(ctx context.Context, kc *keycloak.Client, token, realm stri
 		return "", fmt.Errorf("status %d: %s", resp.StatusCode(), resp.String())
 	}
 	loc := resp.Header().Get("Location")
+	if loc == "" {
+		return "", fmt.Errorf("status %d without Location header", resp.StatusCode())
+	}
 	return loc[strings.LastIndex(loc, "/")+1:], nil
 }
 

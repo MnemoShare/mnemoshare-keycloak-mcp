@@ -51,14 +51,13 @@ func TestCreateClientScopeProtocolMapperKeepsAllConfigKeys(t *testing.T) {
 	if got.path != "/admin/realms/r1/client-scopes/s1/protocol-mappers/models" {
 		t.Fatalf("path %s", got.path)
 	}
-	var body struct {
-		Config map[string]any `json:"config"`
-	}
+	var body map[string]any
 	if err := json.Unmarshal([]byte(got.body), &body); err != nil {
 		t.Fatal(err)
 	}
-	if !reflect.DeepEqual(body.Config, cfg) {
-		t.Fatalf("config = %v, want %v", body.Config, cfg)
+	want := map[string]any{"name": "n", "protocol": "openid-connect", "protocolMapper": "t", "config": cfg}
+	if !reflect.DeepEqual(body, want) {
+		t.Fatalf("body = %v, want %v", body, want)
 	}
 	if !strings.Contains(resultText(res), "newid") {
 		t.Fatalf("missing id: %s", resultText(res))
@@ -74,14 +73,13 @@ func TestCreateClientProtocolMapperKeepsAllConfigKeys(t *testing.T) {
 	if res.IsError {
 		t.Fatalf("unexpected error: %s", resultText(res))
 	}
-	var body struct {
-		Config map[string]any `json:"config"`
-	}
+	var body map[string]any
 	if err := json.Unmarshal([]byte(findReq(t, reqs, http.MethodPost).body), &body); err != nil {
 		t.Fatal(err)
 	}
-	if !reflect.DeepEqual(body.Config, cfg) {
-		t.Fatalf("config = %v, want %v", body.Config, cfg)
+	want := map[string]any{"name": "n", "protocol": "openid-connect", "protocolMapper": "t", "config": cfg}
+	if !reflect.DeepEqual(body, want) {
+		t.Fatalf("body = %v, want %v", body, want)
 	}
 }
 
@@ -157,20 +155,64 @@ func TestUpdateProtocolMapperNotFound(t *testing.T) {
 
 func TestProtocolMapperEmptyIDsRejected(t *testing.T) {
 	cfg := map[string]any{"x": "y"}
-	cases := map[string]map[string]any{
-		"create_client_scope_protocol_mapper": {"scope_id": "", "name": "n", "protocol": "p", "mapper_type": "t", "config": cfg},
-		"update_client_scope_protocol_mapper": {"scope_id": "", "mapper_id": "m1"},
-		"update_client_protocol_mapper":       {"id": "c1", "mapper_id": ""},
+	cases := map[string]struct {
+		tool string
+		args map[string]any
+	}{
+		"create scope empty scope_id":  {"create_client_scope_protocol_mapper", map[string]any{"scope_id": "", "name": "n", "protocol": "p", "mapper_type": "t", "config": cfg}},
+		"create client empty id":       {"create_client_protocol_mapper", map[string]any{"id": "", "name": "n", "protocol": "p", "mapper_type": "t", "config": cfg}},
+		"update scope empty scope_id":  {"update_client_scope_protocol_mapper", map[string]any{"scope_id": "", "mapper_id": "m1", "config": cfg}},
+		"update scope empty mapper_id": {"update_client_scope_protocol_mapper", map[string]any{"scope_id": "s1", "mapper_id": "", "config": cfg}},
+		"update client empty id":       {"update_client_protocol_mapper", map[string]any{"id": "", "mapper_id": "m1", "config": cfg}},
+		"update client empty mapper":   {"update_client_protocol_mapper", map[string]any{"id": "c1", "mapper_id": "", "config": cfg}},
+		"update scope nothing":         {"update_client_scope_protocol_mapper", map[string]any{"scope_id": "s1", "mapper_id": "m1"}},
+		"update client nothing":        {"update_client_protocol_mapper", map[string]any{"id": "c1", "mapper_id": "m1"}},
 	}
-	for tool, args := range cases {
-		t.Run(tool, func(t *testing.T) {
+	for name, tc := range cases {
+		t.Run(name, func(t *testing.T) {
 			cs, reqs := newTestSession(t, mapperHandler)
-			res := callTool(t, cs, tool, args)
+			res := callTool(t, cs, tc.tool, tc.args)
 			if !res.IsError {
 				t.Fatalf("want error, got %s", resultText(res))
 			}
 			if n := len(reqs.all()); n != 0 {
 				t.Fatalf("%d keycloak calls", n)
+			}
+		})
+	}
+}
+
+func TestUpdateProtocolMapperUpstreamErrors(t *testing.T) {
+	tools := map[string]map[string]any{
+		"update_client_protocol_mapper":       {"id": "c1", "mapper_id": "m1", "config": map[string]any{"x": "y"}},
+		"update_client_scope_protocol_mapper": {"scope_id": "s1", "mapper_id": "m1", "config": map[string]any{"x": "y"}},
+	}
+	for tool, args := range tools {
+		t.Run(tool+"/get403", func(t *testing.T) {
+			cs, reqs := newTestSession(t, func(w http.ResponseWriter, r *http.Request) {
+				w.WriteHeader(http.StatusForbidden)
+			})
+			res := callTool(t, cs, tool, args)
+			if !res.IsError || strings.Contains(resultText(res), "not found") {
+				t.Fatalf("want non-not-found error, got %q", resultText(res))
+			}
+			for _, r := range reqs.all() {
+				if r.method == http.MethodPut {
+					t.Fatalf("unexpected PUT")
+				}
+			}
+		})
+		t.Run(tool+"/put400", func(t *testing.T) {
+			cs, _ := newTestSession(t, func(w http.ResponseWriter, r *http.Request) {
+				if r.Method == http.MethodPut {
+					w.WriteHeader(http.StatusBadRequest)
+					return
+				}
+				mapperHandler(w, r)
+			})
+			res := callTool(t, cs, tool, args)
+			if !res.IsError || strings.Contains(resultText(res), "not found") {
+				t.Fatalf("want upstream error, got %q", resultText(res))
 			}
 		})
 	}

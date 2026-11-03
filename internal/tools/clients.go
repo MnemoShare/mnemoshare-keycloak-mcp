@@ -631,6 +631,9 @@ func registerUpdateClientProtocolMapper(s *mcp.Server, kc *keycloak.Client) {
 		if args.MapperID == "" {
 			return toolError("mapper_id is required")
 		}
+		if args.Name == nil && len(args.Config) == 0 {
+			return toolError("nothing to update: supply name and/or config")
+		}
 		token, err := kc.Token(ctx)
 		if err != nil {
 			return toolError(fmt.Sprintf("failed to get token: %v", err))

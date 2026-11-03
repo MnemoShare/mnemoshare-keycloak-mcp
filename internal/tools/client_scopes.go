@@ -59,11 +59,11 @@ type createClientScopeProtocolMapperArgs struct {
 }
 
 type updateClientScopeProtocolMapperArgs struct {
-	Realm    string             `json:"realm,omitempty" jsonschema:"The realm name (uses default realm if omitted)"`
-	ScopeID  string             `json:"scope_id" jsonschema:"The client scope ID"`
-	MapperID string             `json:"mapper_id" jsonschema:"The protocol mapper ID to update"`
-	Name     *string            `json:"name,omitempty" jsonschema:"The new name of the protocol mapper"`
-	Config   map[string]string  `json:"config,omitempty" jsonschema:"Updated mapper configuration as key-value pairs"`
+	Realm    string            `json:"realm,omitempty" jsonschema:"The realm name (uses default realm if omitted)"`
+	ScopeID  string            `json:"scope_id" jsonschema:"The client scope ID"`
+	MapperID string            `json:"mapper_id" jsonschema:"The protocol mapper ID to update"`
+	Name     *string           `json:"name,omitempty" jsonschema:"The new name of the protocol mapper"`
+	Config   map[string]string `json:"config,omitempty" jsonschema:"Updated mapper configuration as key-value pairs"`
 }
 
 type deleteClientScopeProtocolMapperArgs struct {
@@ -271,6 +271,9 @@ func registerClientScopeTools(s *mcp.Server, kc *keycloak.Client) {
 		}
 		if args.MapperID == "" {
 			return toolError("mapper_id is required")
+		}
+		if args.Name == nil && len(args.Config) == 0 {
+			return toolError("nothing to update: supply name and/or config")
 		}
 		token, err := kc.Token(ctx)
 		if err != nil {
