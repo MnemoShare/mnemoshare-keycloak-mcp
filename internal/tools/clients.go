@@ -592,6 +592,9 @@ func registerCreateClientProtocolMapper(s *mcp.Server, kc *keycloak.Client) {
 		Name:        "create_client_protocol_mapper",
 		Description: "Create a protocol mapper for a Keycloak client",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args createClientProtocolMapperArgs) (*mcp.CallToolResult, any, error) {
+		if args.ID == "" {
+			return toolError("id is required")
+		}
 		token, err := kc.Token(ctx)
 		if err != nil {
 			return toolError(fmt.Sprintf("failed to get token: %v", err))
@@ -620,25 +623,24 @@ func registerCreateClientProtocolMapper(s *mcp.Server, kc *keycloak.Client) {
 func registerUpdateClientProtocolMapper(s *mcp.Server, kc *keycloak.Client) {
 	mcp.AddTool(s, &mcp.Tool{
 		Name:        "update_client_protocol_mapper",
-		Description: "Update a protocol mapper for a Keycloak client",
+		Description: "Update a protocol mapper for a Keycloak client." + mergeConfigNote,
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args updateClientProtocolMapperArgs) (*mcp.CallToolResult, any, error) {
+		if args.ID == "" {
+			return toolError("id is required")
+		}
+		if args.MapperID == "" {
+			return toolError("mapper_id is required")
+		}
 		token, err := kc.Token(ctx)
 		if err != nil {
 			return toolError(fmt.Sprintf("failed to get token: %v", err))
 		}
 		realm := kc.ResolveRealm(args.Realm)
 
-		mapper := gocloak.ProtocolMapperRepresentation{
-			ID: gocloak.StringP(args.MapperID),
+		found, err := mergeUpdateMapperRaw(ctx, kc, token, realm, []string{"clients", args.ID, "protocol-mappers", "models", args.MapperID}, args.Name, args.Config)
+		if !found {
+			return toolError(fmt.Sprintf("protocol mapper %q not found in client %q", args.MapperID, args.ID))
 		}
-		if args.Name != nil {
-			mapper.Name = args.Name
-		}
-		if len(args.Config) > 0 {
-			mapper.Config = &args.Config
-		}
-
-		err = kc.GC.UpdateClientProtocolMapper(ctx, token, realm, args.ID, args.MapperID, mapper)
 		if err != nil {
 			return toolError(fmt.Sprintf("failed to update protocol mapper: %v", err))
 		}
