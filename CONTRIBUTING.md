@@ -63,8 +63,9 @@ make run-http
    ```
 3. **Make your changes** — keep commits focused and well-described
 4. **Test your changes** against a running Keycloak instance
-   CI runs build, vet, golangci-lint and race tests on every pull request.
 5. **Push** your branch and open a Pull Request
+
+CI runs build, vet, golangci-lint and race tests on every pull request.
 
 ### Pull Request Guidelines
 
