@@ -2,7 +2,6 @@ package tools
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 
 	"github.com/Nerzal/gocloak/v13"
@@ -60,11 +59,11 @@ type createClientScopeProtocolMapperArgs struct {
 }
 
 type updateClientScopeProtocolMapperArgs struct {
-	Realm    string             `json:"realm,omitempty" jsonschema:"The realm name (uses default realm if omitted)"`
-	ScopeID  string             `json:"scope_id" jsonschema:"The client scope ID"`
-	MapperID string             `json:"mapper_id" jsonschema:"The protocol mapper ID to update"`
-	Name     *string            `json:"name,omitempty" jsonschema:"The new name of the protocol mapper"`
-	Config   map[string]string  `json:"config,omitempty" jsonschema:"Updated mapper configuration as key-value pairs"`
+	Realm    string            `json:"realm,omitempty" jsonschema:"The realm name (uses default realm if omitted)"`
+	ScopeID  string            `json:"scope_id" jsonschema:"The client scope ID"`
+	MapperID string            `json:"mapper_id" jsonschema:"The protocol mapper ID to update"`
+	Name     *string           `json:"name,omitempty" jsonschema:"The new name of the protocol mapper"`
+	Config   map[string]string `json:"config,omitempty" jsonschema:"Updated mapper configuration as key-value pairs"`
 }
 
 type deleteClientScopeProtocolMapperArgs struct {
@@ -235,6 +234,9 @@ func registerClientScopeTools(s *mcp.Server, kc *keycloak.Client) {
 		Name:        "create_client_scope_protocol_mapper",
 		Description: "Create a protocol mapper in a client scope",
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args createClientScopeProtocolMapperArgs) (*mcp.CallToolResult, any, error) {
+		if args.ScopeID == "" {
+			return toolError("scope_id is required")
+		}
 		token, err := kc.Token(ctx)
 		if err != nil {
 			return toolError(fmt.Sprintf("Error: failed to get token: %v", err))
@@ -242,19 +244,16 @@ func registerClientScopeTools(s *mcp.Server, kc *keycloak.Client) {
 
 		realm := kc.ResolveRealm(args.Realm)
 
-		mapper := gocloak.ProtocolMappers{
-			Name:           gocloak.StringP(args.Name),
-			Protocol:       gocloak.StringP(args.Protocol),
-			ProtocolMapper: gocloak.StringP(args.MapperType),
+		body := map[string]any{
+			"name":           args.Name,
+			"protocol":       args.Protocol,
+			"protocolMapper": args.MapperType,
 		}
 		if len(args.Config) > 0 {
-			configJSON, _ := json.Marshal(args.Config)
-			var pmConfig gocloak.ProtocolMappersConfig
-			_ = json.Unmarshal(configJSON, &pmConfig)
-			mapper.ProtocolMappersConfig = &pmConfig
+			body["config"] = args.Config
 		}
 
-		createdID, err := kc.GC.CreateClientScopeProtocolMapper(ctx, token, realm, args.ScopeID, mapper)
+		createdID, err := createMapperRaw(ctx, kc, token, realm, []string{"client-scopes", args.ScopeID, "protocol-mappers", "models"}, body)
 		if err != nil {
 			return toolError(fmt.Sprintf("Error: failed to create protocol mapper %q for client scope %q in realm %q: %v", args.Name, args.ScopeID, realm, err))
 		}
@@ -265,8 +264,17 @@ func registerClientScopeTools(s *mcp.Server, kc *keycloak.Client) {
 	// 8. update_client_scope_protocol_mapper
 	mcp.AddTool(s, &mcp.Tool{
 		Name:        "update_client_scope_protocol_mapper",
-		Description: "Update a protocol mapper in a client scope",
+		Description: "Update a protocol mapper in a client scope." + mergeConfigNote,
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args updateClientScopeProtocolMapperArgs) (*mcp.CallToolResult, any, error) {
+		if args.ScopeID == "" {
+			return toolError("scope_id is required")
+		}
+		if args.MapperID == "" {
+			return toolError("mapper_id is required")
+		}
+		if args.Name == nil && len(args.Config) == 0 {
+			return toolError("nothing to update: supply name and/or config")
+		}
 		token, err := kc.Token(ctx)
 		if err != nil {
 			return toolError(fmt.Sprintf("Error: failed to get token: %v", err))
@@ -274,34 +282,11 @@ func registerClientScopeTools(s *mcp.Server, kc *keycloak.Client) {
 
 		realm := kc.ResolveRealm(args.Realm)
 
-		// Fetch all mappers and find the one to update.
-		mappers, err := kc.GC.GetClientScopeProtocolMappers(ctx, token, realm, args.ScopeID)
-		if err != nil {
-			return toolError(fmt.Sprintf("Error: failed to get protocol mappers for client scope %q in realm %q: %v", args.ScopeID, realm, err))
-		}
-
-		var existing *gocloak.ProtocolMappers
-		for _, m := range mappers {
-			if m.ID != nil && *m.ID == args.MapperID {
-				existing = m
-				break
-			}
-		}
-		if existing == nil {
+		found, err := mergeUpdateMapperRaw(ctx, kc, token, realm, []string{"client-scopes", args.ScopeID, "protocol-mappers", "models", args.MapperID}, args.Name, args.Config)
+		if !found {
 			return toolError(fmt.Sprintf("Error: protocol mapper %q not found in client scope %q", args.MapperID, args.ScopeID))
 		}
-
-		if args.Name != nil {
-			existing.Name = args.Name
-		}
-		if args.Config != nil {
-			configJSON, _ := json.Marshal(args.Config)
-			var pmConfig gocloak.ProtocolMappersConfig
-			_ = json.Unmarshal(configJSON, &pmConfig)
-			existing.ProtocolMappersConfig = &pmConfig
-		}
-
-		if err := kc.GC.UpdateClientScopeProtocolMapper(ctx, token, realm, args.ScopeID, *existing); err != nil {
+		if err != nil {
 			return toolError(fmt.Sprintf("Error: failed to update protocol mapper %q in client scope %q in realm %q: %v", args.MapperID, args.ScopeID, realm, err))
 		}
 
