@@ -28,7 +28,7 @@ Key variables:
 - `internal/config/` — env-based configuration
 - `internal/auth/` — token manager with auto-refresh
 - `internal/keycloak/` — thin gocloak wrapper with token injection
-- `internal/tools/` — 134 MCP tools across 13 domains
+- `internal/tools/` — 139 MCP tools across 13 domains
 
 ## Tool Pattern
 

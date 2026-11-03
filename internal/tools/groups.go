@@ -3,6 +3,7 @@ package tools
 import (
 	"context"
 	"fmt"
+	"strconv"
 
 	"github.com/Nerzal/gocloak/v13"
 	"github.com/mnemoshare/mnemoshare-keycloak-mcp/internal/keycloak"
@@ -80,6 +81,28 @@ type getGroupClientRolesArgs struct {
 	Realm    string `json:"realm,omitempty"    jsonschema:"Realm name (uses default if omitted)"`
 	GroupID  string `json:"group_id"           jsonschema:"Group ID"`
 	ClientID string `json:"client_id"         jsonschema:"Client UUID (id of the client)"`
+}
+
+type addGroupClientRolesArgs struct {
+	Realm    string   `json:"realm,omitempty"    jsonschema:"Realm name (uses default if omitted)"`
+	GroupID  string   `json:"group_id"           jsonschema:"Group ID"`
+	ClientID string   `json:"client_id"          jsonschema:"Internal client UUID"`
+	Roles    []string `json:"roles"              jsonschema:"List of client role names to add"`
+}
+
+type removeGroupClientRolesArgs struct {
+	Realm    string   `json:"realm,omitempty"    jsonschema:"Realm name (uses default if omitted)"`
+	GroupID  string   `json:"group_id"           jsonschema:"Group ID"`
+	ClientID string   `json:"client_id"          jsonschema:"Internal client UUID"`
+	Roles    []string `json:"roles"              jsonschema:"List of client role names to remove"`
+}
+
+type listGroupChildrenArgs struct {
+	Realm   string `json:"realm,omitempty"    jsonschema:"Realm name (uses default if omitted)"`
+	GroupID string `json:"group_id"           jsonschema:"Parent group ID"`
+	Search  string `json:"search,omitempty"   jsonschema:"Search string for child group name"`
+	First   *int   `json:"first,omitempty"    jsonschema:"Pagination offset"`
+	Max     *int   `json:"max,omitempty"      jsonschema:"Maximum number of results"`
 }
 
 // ---------------------------------------------------------------------------
@@ -348,5 +371,101 @@ func registerGroupTools(s *mcp.Server, kc *keycloak.Client) {
 			return toolError(fmt.Sprintf("failed to get group client roles: %v", err))
 		}
 		return toolResult(roles)
+	})
+
+	// 13. add_group_client_roles
+	mcp.AddTool(s, &mcp.Tool{
+		Name:        "add_group_client_roles",
+		Description: "Add client roles to a Keycloak group",
+	}, func(ctx context.Context, req *mcp.CallToolRequest, args addGroupClientRolesArgs) (*mcp.CallToolResult, any, error) {
+		if args.GroupID == "" || args.ClientID == "" {
+			return toolError("group_id and client_id are required")
+		}
+		if len(args.Roles) == 0 {
+			return toolError("roles must contain at least one role name")
+		}
+		token, err := kc.Token(ctx)
+		if err != nil {
+			return toolError(fmt.Sprintf("failed to get token: %v", err))
+		}
+		realm := kc.ResolveRealm(args.Realm)
+
+		rolesToAdd, err := resolveClientRoles(ctx, kc, token, realm, args.ClientID, args.Roles)
+		if err != nil {
+			return toolError(err.Error())
+		}
+
+		if err := kc.GC.AddClientRolesToGroup(ctx, token, realm, args.ClientID, args.GroupID, rolesToAdd); err != nil {
+			return toolError(fmt.Sprintf("failed to add client roles to group: %v", err))
+		}
+		return toolSuccess(fmt.Sprintf("Added %d client role(s) to group %s", len(rolesToAdd), args.GroupID))
+	})
+
+	// 14. remove_group_client_roles
+	mcp.AddTool(s, &mcp.Tool{
+		Name:        "remove_group_client_roles",
+		Description: "Remove client roles from a Keycloak group",
+	}, func(ctx context.Context, req *mcp.CallToolRequest, args removeGroupClientRolesArgs) (*mcp.CallToolResult, any, error) {
+		if args.GroupID == "" || args.ClientID == "" {
+			return toolError("group_id and client_id are required")
+		}
+		if len(args.Roles) == 0 {
+			return toolError("roles must contain at least one role name")
+		}
+		token, err := kc.Token(ctx)
+		if err != nil {
+			return toolError(fmt.Sprintf("failed to get token: %v", err))
+		}
+		realm := kc.ResolveRealm(args.Realm)
+
+		rolesToRemove, err := resolveClientRoles(ctx, kc, token, realm, args.ClientID, args.Roles)
+		if err != nil {
+			return toolError(err.Error())
+		}
+
+		if err := kc.GC.DeleteClientRoleFromGroup(ctx, token, realm, args.ClientID, args.GroupID, rolesToRemove); err != nil {
+			return toolError(fmt.Sprintf("failed to remove client roles from group: %v", err))
+		}
+		return toolSuccess(fmt.Sprintf("Removed %d client role(s) from group %s", len(rolesToRemove), args.GroupID))
+	})
+
+	// 15. list_group_children
+	// Keycloak 23+ no longer populates subGroups in list_groups, and gocloak has no wrapper for /children.
+	mcp.AddTool(s, &mcp.Tool{
+		Name:        "list_group_children",
+		Description: "List the child groups of a Keycloak group with optional search and pagination (requires Keycloak 23+)",
+	}, func(ctx context.Context, req *mcp.CallToolRequest, args listGroupChildrenArgs) (*mcp.CallToolResult, any, error) {
+		if args.GroupID == "" {
+			return toolError("group_id is required")
+		}
+		token, err := kc.Token(ctx)
+		if err != nil {
+			return toolError(fmt.Sprintf("failed to get token: %v", err))
+		}
+		realm := kc.ResolveRealm(args.Realm)
+
+		query := map[string]string{}
+		if args.Search != "" {
+			query["search"] = args.Search
+		}
+		if args.First != nil {
+			query["first"] = strconv.Itoa(*args.First)
+		}
+		if args.Max != nil {
+			query["max"] = strconv.Itoa(*args.Max)
+		}
+
+		var groups []*gocloak.Group
+		resp, err := kc.GC.GetRequestWithBearerAuth(ctx, token).
+			SetResult(&groups).
+			SetQueryParams(query).
+			Get(kc.AdminRealmURL(realm, "groups", args.GroupID, "children"))
+		if err != nil {
+			return toolError(fmt.Sprintf("failed to list group children: %v", err))
+		}
+		if resp.IsError() {
+			return toolError(fmt.Sprintf("failed to list group children: status %d: %s", resp.StatusCode(), resp.String()))
+		}
+		return toolResult(groups)
 	})
 }

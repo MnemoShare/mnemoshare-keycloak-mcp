@@ -42,6 +42,12 @@ type deleteRealmRoleArgs struct {
 	RoleName string `json:"role_name"       jsonschema:"Role name"`
 }
 
+type getGroupsByClientRoleArgs struct {
+	Realm    string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
+	ClientID string `json:"client_id"       jsonschema:"Internal client UUID"`
+	RoleName string `json:"role_name"       jsonschema:"Client role name"`
+}
+
 type getRealmRoleCompositesArgs struct {
 	Realm    string `json:"realm,omitempty" jsonschema:"Realm name (uses default if omitted)"`
 	RoleName string `json:"role_name"       jsonschema:"Role name"`
@@ -432,6 +438,27 @@ func registerRoleTools(s *mcp.Server, kc *keycloak.Client) {
 		groups, err := kc.GC.GetGroupsByRole(ctx, token, realm, args.RoleName)
 		if err != nil {
 			return toolError(fmt.Sprintf("failed to get groups for role %q: %v", args.RoleName, err))
+		}
+		return toolResult(groups)
+	})
+
+	// 17. get_groups_by_client_role
+	mcp.AddTool(s, &mcp.Tool{
+		Name:        "get_groups_by_client_role",
+		Description: "Get all groups assigned a specific client role",
+	}, func(ctx context.Context, req *mcp.CallToolRequest, args getGroupsByClientRoleArgs) (*mcp.CallToolResult, any, error) {
+		if args.ClientID == "" || args.RoleName == "" {
+			return toolError("client_id and role_name are required")
+		}
+		token, err := kc.Token(ctx)
+		if err != nil {
+			return toolError(fmt.Sprintf("auth failed: %v", err))
+		}
+		realm := kc.ResolveRealm(args.Realm)
+		// gocloak takes roleName before clientID.
+		groups, err := kc.GC.GetGroupsByClientRole(ctx, token, realm, args.RoleName, args.ClientID)
+		if err != nil {
+			return toolError(fmt.Sprintf("failed to get groups for client role %q: %v", args.RoleName, err))
 		}
 		return toolResult(groups)
 	})

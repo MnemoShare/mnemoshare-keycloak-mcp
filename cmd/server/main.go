@@ -72,7 +72,7 @@ func runHTTP(ctx context.Context, cfg *config.Config, s *mcp.Server) {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
-		fmt.Fprint(w, "ok")
+		_, _ = fmt.Fprint(w, "ok")
 	})
 	mux.Handle("/mcp", httpHandler)
 
@@ -81,7 +81,7 @@ func runHTTP(ctx context.Context, cfg *config.Config, s *mcp.Server) {
 	go func() {
 		<-ctx.Done()
 		log.Info().Msg("shutting down HTTP server")
-		srv.Close()
+		_ = srv.Close()
 	}()
 
 	if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
