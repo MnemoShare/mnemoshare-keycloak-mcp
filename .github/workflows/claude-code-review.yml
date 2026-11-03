@@ -1,3 +1,4 @@
+# Do not dispatch on a fork PR: dispatch bypasses the fork guard and runs the reviewer with secrets against fork content.
 name: Claude Code Review
 
 on:
